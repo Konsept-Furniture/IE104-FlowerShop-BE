@@ -2,6 +2,7 @@ const { Sequelize } = require("sequelize");
 const sequelize = new Sequelize("shop", "postgres", "123456", {
   host: "localhost",
   dialect: "postgres",
+  logging: false,
 });
 
 let connectDb = async () => {
