@@ -18,8 +18,13 @@ module.exports = (sequelize, DataTypes) => {
       costPrice: DataTypes.DOUBLE,
       price: DataTypes.DOUBLE,
       quantity: DataTypes.INTEGER,
+      description: DataTypes.STRING,
+      discount: DataTypes.DOUBLE,
       supplierId: DataTypes.INTEGER,
       productTypeId: DataTypes.INTEGER,
+      createdAt: DataTypes.DATE,
+      updatedAt: DataTypes.DATE,
+      deleted: DataTypes.BOOLEAN,
     },
     {
       sequelize,

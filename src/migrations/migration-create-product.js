@@ -30,6 +30,12 @@ module.exports = {
       quantity: {
         type: Sequelize.INTEGER,
       },
+      description: {
+        type: Sequelize.STRING,
+      },
+      discount: {
+        type: Sequelize.DOUBLE,
+      },
       supplierId: {
         type: Sequelize.INTEGER,
       },
@@ -43,6 +49,10 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
+      },
+      deleted: {
+        defaultValue: false,
+        type: Sequelize.BOOLEAN,
       },
     });
   },

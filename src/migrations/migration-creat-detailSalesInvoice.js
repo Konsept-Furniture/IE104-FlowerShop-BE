@@ -1,20 +1,28 @@
 "use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("PurchaseContract", {
-      // seller: DataTypes.INTEGER,
-      // receiveDate: DataTypes.DATE,
+    await queryInterface.createTable("DetailSalesInvoice", {
+      //   salesInvoiceId: DataTypes.INTEGER,
+      //   productId: DataTypes.INTEGER,
+      //   quantity: DataTypes.INTEGER,
+      //   total: DataTypes.DOUBLE,
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      seller: {
+      salesInvoiceId: {
         type: Sequelize.INTEGER,
       },
-      receiveDate: {
-        type: Sequelize.DATE,
+      productId: {
+        type: Sequelize.INTEGER,
+      },
+      quantity: {
+        type: Sequelize.INTEGER,
+      },
+      total: {
+        type: Sequelize.DOUBLE,
       },
       createdAt: {
         allowNull: false,
@@ -24,13 +32,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      deleted: {
-        defaultValue: false,
-        type: Sequelize.BOOLEAN,
-      },
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("PurchaseContract");
+    await queryInterface.dropTable("DetailSalesInvoice");
   },
 };

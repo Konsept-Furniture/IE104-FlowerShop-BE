@@ -16,6 +16,9 @@ module.exports = {
       description: {
         type: Sequelize.STRING,
       },
+      parentId: {
+        type: Sequelize.INTEGER,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -23,6 +26,10 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
+      },
+      deleted: {
+        defaultValue: false,
+        type: Sequelize.BOOLEAN,
       },
     });
   },
