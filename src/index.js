@@ -1,29 +1,33 @@
 const express = require("express");
-const path = require("path");
-const morgan = require("morgan");
-require("dotenv").config();
-const connectDb = require("./config/connectDB");
 const app = express();
-const port = process.env.PORT || 5000;
-const route = require("./routes/index");
+const dotenv = require("dotenv");
+const connectDB = require("./config/db/index");
+const userRoute = require("./routes/user");
+const authRoute = require("./routes/auth");
+const cartRoute = require("./routes/cart");
+const orderRoute = require("./routes/order");
+const productRoute = require("./routes/product");
+const cors = require("cors");
 
-connectDb();
-//config app
+app.use(cors());
+
+dotenv.config();
+connectDB.connect();
+
+//Middeware
+
+app.use(express.json());
 app.use(
   express.urlencoded({
     extended: true,
   })
 );
-app.use(express.json());
+app.use("/api/users", userRoute);
+app.use("/api/auth", authRoute);
+app.use("/api/products", productRoute);
+app.use("/api/carts", cartRoute);
+app.use("/api/orders", orderRoute);
 
-//static path
-app.use(express.static(path.join(__dirname, "public")));
-
-//HTTP logger
-// app.use(morgan("combined"));
-
-route(app);
-
-app.listen(port, () => {
-  console.log(`App listening at http://localhost:${port}`);
+app.listen(process.env.PORT || 5000, () => {
+  console.log("Backend server is running!");
 });

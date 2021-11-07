@@ -1,35 +1,17 @@
-"use strict";
-const { Model } = require("sequelize");
-module.exports = (sequelize, DataTypes) => {
-  class Product extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
-  }
-  Product.init(
-    {
-      name: DataTypes.STRING,
-      image: DataTypes.STRING,
-      costPrice: DataTypes.DOUBLE,
-      price: DataTypes.DOUBLE,
-      quantity: DataTypes.INTEGER,
-      description: DataTypes.STRING,
-      discount: DataTypes.DOUBLE,
-      supplierId: DataTypes.INTEGER,
-      productTypeId: DataTypes.INTEGER,
-      createdAt: DataTypes.DATE,
-      updatedAt: DataTypes.DATE,
-      deleted: DataTypes.BOOLEAN,
-    },
-    {
-      sequelize,
-      modelName: "Product",
-    }
-  );
-  return Product;
-};
+const mongoose = require("mongoose");
+
+const ProductSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true, unique: true },
+    desc: { type: String, required: true, unique: true },
+    img: { type: String, required: true },
+    categories: { type: Array },
+    size: { type: Array },
+    color: { type: Array },
+    price: { type: Number, required: true },
+    inStock: { type: Boolean, default: true },
+  },
+  { timestamps: true }
+);
+
+module.exports = mongoose.model("Product", ProductSchema);

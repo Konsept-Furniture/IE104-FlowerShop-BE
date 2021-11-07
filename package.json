@@ -19,14 +19,13 @@
   "homepage": "https://github.com/annhienktuit/IE104-FlowerShop-BE#readme",
   "dependencies": {
     "cors": "^2.8.5",
+    "crypto-js": "^4.1.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.0.12",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.13",
-    "pg": "^8.7.1",
-    "sequelize": "^6.6.5"
-  },
-  "devDependencies": {
-    "sequelize-cli": "^6.2.0"
+    "stripe": "^8.186.1"
   }
 }
