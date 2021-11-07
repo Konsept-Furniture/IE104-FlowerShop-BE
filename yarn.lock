@@ -883,7 +883,12 @@
   optionalDependencies:
     "saslprep" "^1.0.3"
 
-"mongoose@^6.0.12":
+"mongoose-delete@^0.5.4":
+  "integrity" "sha512-zKkcWFEwTneVG4Oiy+qJRJPFCiGlqOJToHeU3a3meJybWsHCnWxdHkGEkFWNY5cmYEv5av3WwByOhPlQ6I+FmQ=="
+  "resolved" "https://registry.npmjs.org/mongoose-delete/-/mongoose-delete-0.5.4.tgz"
+  "version" "0.5.4"
+
+"mongoose@^6.0.12", "mongoose@4.x || 5.x || 6.x":
   "integrity" "sha512-BvsZk7zEEhb1AgQFLtxN9C+7qgy5edRuA3ZDDwHU+kHG/HM44vI6FdKV5m6HVdAUeCHHQTiVv+YQh8BRsToSHw=="
   "resolved" "https://registry.npmjs.org/mongoose/-/mongoose-6.0.12.tgz"
   "version" "6.0.12"
