@@ -28,11 +28,25 @@ class OrderController {
     }
   };
 
+  restoreOrder = async (req, res) => {
+    try {
+      await Order.restore({ _id: req.params.id });
+      return res.status(200).json("Resore successfully");
+    } catch (error) {
+      return res.status(500).json(error);
+    }
+  };
+
   deleteOrder = async (req, res) => {
     try {
       // console.log(req.params.id);
-      const deletedOrder = await Order.findByIdAndDelete(req.params.id);
-      return res.status(200).json(deletedOrder);
+      const order = await Order.findOne({ _id: req.params.id });
+      if (order) {
+        await Order.delete({ _id: req.params.id });
+        return res.status(200).json("The order has been put in the trash...");
+      }
+      await Order.deleteOne({ _id: req.params.id });
+      return res.status(200).json("Order has been deleted...");
     } catch (error) {
       return res.status(500).json(error);
     }
@@ -40,20 +54,26 @@ class OrderController {
 
   readUserOrders = async (req, res) => {
     // console.log(">>Check get order", req.params.userId);
+    let qDeleted = req.query.deleted;
+    // console.log("Check deleted ", qDeleted);
     try {
-      const orders = await Order.find({ userId: req.params.userId });
+      const orders = qDeleted
+        ? await Order.findDeleted({ userId: req.params.userId })
+        : await Order.find({ userId: req.params.userId });
       return res.status(200).json(orders);
     } catch (error) {
       return res.status(500).json(error);
     }
   };
+
   readAllOrders = async (req, res) => {
+    let qDeleted = req.query.deleted;
     try {
-      const orders = await Order.find();
+      const orders = qDeleted ? await Order.findDeleted() : await Order.find();
       return res.status(200).json(orders);
     } catch (error) {
       return res.status(500).json(error);
-    } 
+    }
   };
 
   readMonthlyIncome = async (req, res) => {
