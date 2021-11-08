@@ -8,6 +8,7 @@ const router = express.Router();
 const UserController = require("../controllers/UserController");
 
 //UPDATE USER
+//Chỉ update những user (deleted = fasle)
 router.put("/:id", verifyTokenAndAuthorization, UserController.updateUser);
 
 //DELETE USER

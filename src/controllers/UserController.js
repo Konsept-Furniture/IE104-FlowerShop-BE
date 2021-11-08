@@ -42,11 +42,8 @@ class UserController {
   readAllUser = async (req, res) => {
     console.log("Here", req.query.deleted);
     let qDeleted = req.query.deleted;
-    if (qDeleted === "false") {
-      console.log("Oke");
-    }
     try {
-      const users = await User.findWithDeleted();
+      const users = qDeleted ? await User.findDeleted() : await User.find();
       return res.status(200).json(users);
     } catch (error) {
       return res.status(500).json(error);
