@@ -4,6 +4,12 @@ const jwt = require("jsonwebtoken");
 class AuthControler {
   //[GET]
   register = async (req, res) => {
+    //Phần check xem username có trong hệ thông chưa
+    // const user = await User.findOne({ username: req.body.username });
+
+    // if (user) {
+    //   return res.status(401).json("Username already exists");
+    // }
     const newUser = new User({
       username: req.body.username,
       email: req.body.email,
@@ -24,7 +30,6 @@ class AuthControler {
   login = async (req, res) => {
     try {
       const user = await User.findOne({ username: req.body.username });
-
       if (!user) {
         return res.status(401).json("Wrong User Name");
       }

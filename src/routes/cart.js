@@ -6,7 +6,7 @@ const {
   verifyTokenAndAdmin,
 } = require("../middleware/verifyToken");
 const router = express.Router();
-
+const CartController = require("../controllers/CartController");
 //CREATE CART- OK
 router.post("/", verifyToken, async (req, res) => {
   const newCart = new Cart(req.body);
@@ -58,7 +58,7 @@ router.get("/:userId", verifyTokenAndAuthorization, async (req, res) => {
   }
 });
 
-//GET ALL PRODUCT
+//GET ALL CART
 router.get("/", verifyTokenAndAdmin, async (req, res) => {
   try {
     const carts = await Cart.find();
