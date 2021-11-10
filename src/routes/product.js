@@ -28,9 +28,10 @@ router.delete(
 router.get("/:id", verifyObjectId, ProductController.readProduct);
 
 //GET ALL PRODUCT CATEGORY
-router.get("/product-category/:category", async (req, res) => {
-  const qCategory = req.query.category;
-});
+router.get(
+  "/product-category/:category",
+  ProductController.readAllProductCategory
+);
 
 //GET ALL PRODUCTS
 router.get("/", ProductController.readAllProduct);
