@@ -1,36 +1,15 @@
 const express = require("express");
 const Product = require("../models/Product");
 const { verifyTokenAndAdmin } = require("../middleware/verifyToken");
+const verifyObjectId = require("../middleware/verifyObjectId");
 const router = express.Router();
+const ProductController = require("../controllers/ProductController");
 
 //CREATE - OK
-router.post("/", verifyTokenAndAdmin, async (req, res) => {
-  const newProduct = new Product(req.body);
-  try {
-    console.log("Come here ", req.body);
-    const savedProduct = await newProduct.save();
-    return res.status(200).json(savedProduct);
-  } catch (err) {
-    return res.status(500).json(err);
-  }
-});
+router.post("/", verifyTokenAndAdmin, ProductController.createProduct);
 
 //UPDATE PRODUCT - OK
-router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
-  //   console.log("Check>>here", req.params.id);
-  try {
-    const updatedProduct = await Product.findByIdAndUpdate(
-      req.params.id,
-      {
-        $set: req.body,
-      },
-      { new: true }
-    );
-    return res.status(200).json(updatedProduct);
-  } catch (error) {
-    return res.status(500).json(error);
-  }
-});
+router.put("/:id", verifyTokenAndAdmin, ProductController.updateProduct);
 
 //DELETE PRODUCT
 router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
@@ -44,14 +23,7 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
 });
 
 //GET PRODUCT
-router.get("/:id", async (req, res) => {
-  try {
-    const product = await Product.findById(req.params.id);
-    return res.status(200).json(product);
-  } catch (error) {
-    return res.status(500).json(error);
-  }
-});
+router.get("/:id", verifyObjectId, ProductController.readProduct);
 
 //GET ALL PRODUCT
 router.get("/", async (req, res) => {
