@@ -3,18 +3,34 @@ const {
   verifyTokenAndAuthorization,
   verifyTokenAndAdmin,
 } = require("../middleware/verifyToken");
+const verifyObjectId = require("../middleware/verifyObjectId");
 const router = express.Router();
 const UserController = require("../controllers/UserController");
 
 //UPDATE USER
 //Chỉ update những user (deleted = fasle)
-router.put("/:id", verifyTokenAndAuthorization, UserController.updateUser);
+router.put(
+  "/:id",
+  verifyObjectId,
+  verifyTokenAndAuthorization,
+  UserController.updateUser
+);
 
 //DELETE USER
-router.delete("/:id", verifyTokenAndAuthorization, UserController.deleteUser);
+router.delete(
+  "/:id",
+  verifyObjectId,
+  verifyTokenAndAuthorization,
+  UserController.deleteUser
+);
 
 //GET USER
-router.get("/:id", verifyTokenAndAdmin, UserController.readUser);
+router.get(
+  "/:id",
+  verifyObjectId,
+  verifyTokenAndAdmin,
+  UserController.readUser
+);
 
 //GET ALL STATS
 router.get(
