@@ -29,13 +29,13 @@ class CartController {
   deleteCart = async (req, res) => {
     try {
       // console.log(req.params.id);
-      const delettedCart = await Cart.findByIdAndDelete(req.params.id);
-      return res.status(200).json(delettedCart);
+      await Cart.findByIdAndDelete(req.params.id);
+      return res.status(200).json("Cart has been deleted...");
     } catch (error) {
       return res.status(500).json(error);
     }
   };
-  readCart = async (req, res) => {
+  readUserCart = async (req, res) => {
     console.log(">>Check get cart", req.params.userId);
     try {
       const cart = await Cart.find({ userId: req.params.userId });

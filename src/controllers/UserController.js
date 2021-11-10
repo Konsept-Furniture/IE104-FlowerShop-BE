@@ -25,19 +25,33 @@ class UserController {
       return res.status(500).json(error);
     }
   };
+
+  restoreUser = async (req, res) => {
+    try {
+      await User.restore({ _id: req.params.id });
+      return res.status(200).json("Resore successfully");
+    } catch (error) {
+      return res.status(500).json(error);
+    }
+  };
   deleteUser = async (req, res) => {
     try {
-      const user = await User.findOneWithDeleted({ _id: req.params.id });
+      const user = await User.findOne({ _id: req.params.id });
       if (user) {
-        if (user.deleted === true) {
-          await User.deleteOne({ _id: req.params.id });
-          return res.status(200).json("User has been deleted...");
-        } else {
-          await User.delete({ _id: req.params.id });
-          return res.status(200).json("The user has been put in the trash...");
-        }
+        await User.delete({ _id: req.params.id });
+        return res.status(200).json("The user has been put in the trash...");
       }
-      return res.status(404).json("User does not exist...");
+      return res.status(404).json("Not found user...");
+    } catch (error) {
+      return res.status(500).json(error);
+    }
+  };
+
+  destroyUser = async (req, res) => {
+    console.log("Come here")
+    try {
+      await User.deleteOne({ _id: req.params.id });
+      return res.status(200).json("User has been deleted...");
     } catch (error) {
       return res.status(500).json(error);
     }

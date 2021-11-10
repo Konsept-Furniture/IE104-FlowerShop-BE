@@ -40,11 +40,15 @@ class OrderController {
   deleteOrder = async (req, res) => {
     try {
       // console.log(req.params.id);
-      const order = await Order.findOne({ _id: req.params.id });
-      if (order) {
-        await Order.delete({ _id: req.params.id });
-        return res.status(200).json("The order has been put in the trash...");
-      }
+      await Order.delete({ _id: req.params.id });
+      return res.status(200).json("The order has been put in the trash...");
+    } catch (error) {
+      return res.status(500).json(error);
+    }
+  };
+
+  destroyOrder = async (req, res) => {
+    try {
       await Order.deleteOne({ _id: req.params.id });
       return res.status(200).json("Order has been deleted...");
     } catch (error) {
@@ -83,7 +87,7 @@ class OrderController {
     console.log("check lastmonth", lastMonth);
     console.log("check previous month", previousMonth);
     try {
-      const income = await Order.aggregate([
+      const income = await Order.aggregateWithDeleted([
         { $match: { createdAt: { $gte: previousMonth } } },
         {
           $project: {

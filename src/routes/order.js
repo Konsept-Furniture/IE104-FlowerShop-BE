@@ -16,6 +16,9 @@ router.put("/:id", verifyTokenAndAdmin, OrderController.updateOrder);
 //DELETE ORDER
 router.delete("/:id", verifyToken, OrderController.deleteOrder);
 
+//DELETE ORDER
+router.delete("/destroy/:id", verifyToken, OrderController.destroyOrder);
+
 //PATCH
 router.patch("/:id", verifyToken, OrderController.restoreOrder);
 

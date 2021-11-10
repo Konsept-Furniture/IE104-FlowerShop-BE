@@ -16,12 +16,28 @@ router.put(
   UserController.updateUser
 );
 
+//RESTORE USER
+router.patch(
+  "/:id",
+  verifyObjectId,
+  verifyTokenAndAuthorization,
+  UserController.restoreUser
+);
+
 //DELETE USER
 router.delete(
   "/:id",
   verifyObjectId,
   verifyTokenAndAuthorization,
   UserController.deleteUser
+);
+
+//DESTROY USER
+router.delete(
+  "/destroy/:id",
+  verifyObjectId,
+  verifyTokenAndAuthorization,
+  UserController.destroyUser
 );
 
 //GET USER
