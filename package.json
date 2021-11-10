@@ -25,6 +25,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.12",
     "mongoose-delete": "^0.5.4",
+    "mongoose-paginate-v2": "^1.4.2",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.13",
     "stripe": "^8.186.1"

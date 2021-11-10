@@ -1,4 +1,5 @@
 const Product = require("../models/Product");
+const getPagination = require("../helper/getPagination");
 class ProductController {
   createProduct = async (req, res) => {
     const newProduct = new Product(req.body);
@@ -58,7 +59,46 @@ class ProductController {
       return res.status(500).json(error);
     }
   };
-  readAllProduct = async (req, res) => {};
+
+  readAllProductCategory = async (req, res) => {
+    const qNew = req.query.new;
+    const qCategory = req.query.category;
+    try {
+      let products;
+      if (qNew) {
+        products = await Product.find().sort({ createdAt: -1 }).limit(10);
+      } else if (qCategory) {
+        products = await Product.find({
+          categories: {
+            $in: [qCategory],
+          },
+        });
+      } else {
+        products = await Product.find();
+      }
+      return res.status(200).json(products);
+    } catch (error) {
+      return res.status(500).json(error);
+    }
+  };
+
+  readAllProduct = async (req, res) => {
+    try {
+      let data;
+      const { page, size } = req.query;
+      const { limit, offset } = getPagination(page, size);
+      data = await Product.paginate({}, { offset, limit });
+      let products = {
+        totalItems: data.totalDocs,
+        products: data.docs,
+        totalPages: data.totalPages,
+        currentPageIndex: data.page - 1,
+      };
+      return res.status(200).json(products);
+    } catch (error) {
+      return res.status(500).json(error);
+    }
+  };
 }
 
 module.exports = new ProductController();

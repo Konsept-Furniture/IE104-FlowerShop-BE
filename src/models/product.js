@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const mongooseDelete = require("mongoose-delete");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 const randomPopular = Math.floor(Math.random() * 1000);
 
@@ -25,5 +26,10 @@ ProductSchema.plugin(mongooseDelete, {
   deletedAt: true,
   overrideMethods: "all",
 });
+
+
+ProductSchema.plugin(mongoosePaginate);
+
+
 
 module.exports = mongoose.model("Product", ProductSchema);
