@@ -8,16 +8,7 @@ const {
 const router = express.Router();
 const CartController = require("../controllers/CartController");
 //CREATE CART- OK
-router.post("/", verifyToken, async (req, res) => {
-  const newCart = new Cart(req.body);
-  try {
-    console.log("Come here ", req.body);
-    const savedCart = await newCart.save();
-    return res.status(200).json(savedCart);
-  } catch (err) {
-    return res.status(500).json(err);
-  }
-});
+router.post("/", verifyToken, CartController.createCart);
 
 //UPDATE CART - OK
 router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {

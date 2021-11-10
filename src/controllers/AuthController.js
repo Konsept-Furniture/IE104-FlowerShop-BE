@@ -17,6 +17,7 @@ class AuthControler {
         req.body.password,
         process.env.PASS_SECRET
       ).toString(),
+      isAdmin: req.body.isAdmin,
     });
     try {
       const savedUser = await newUser.save();
