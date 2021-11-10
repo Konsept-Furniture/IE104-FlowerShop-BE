@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongooseDelete = require("mongoose-delete");
 
 const randomPopular = Math.floor(Math.random() * 1000);
 
@@ -19,5 +20,10 @@ const ProductSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+ProductSchema.plugin(mongooseDelete, {
+  deletedAt: true,
+  overrideMethods: "all",
+});
 
 module.exports = mongoose.model("Product", ProductSchema);

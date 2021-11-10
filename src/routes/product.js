@@ -11,16 +11,18 @@ router.post("/", verifyTokenAndAdmin, ProductController.createProduct);
 //UPDATE PRODUCT - OK
 router.put("/:id", verifyTokenAndAdmin, ProductController.updateProduct);
 
+//RESTORE PRODUCT - OK
+router.patch("/:id", verifyTokenAndAdmin, ProductController.restoreProduct);
+
 //DELETE PRODUCT
-router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
-  try {
-    console.log(req.params.id);
-    await Product.findByIdAndDelete(req.params.id);
-    return res.status(200).json("Product has been deleted...");
-  } catch (error) {
-    return res.status(500).json(error);
-  }
-});
+router.delete("/:id", verifyTokenAndAdmin, ProductController.deleteProduct);
+
+//DESTROY PRODUCT
+router.delete(
+  "/destroy/:id",
+  verifyTokenAndAdmin,
+  ProductController.destroyProduct
+);
 
 //GET PRODUCT
 router.get("/:id", verifyObjectId, ProductController.readProduct);
