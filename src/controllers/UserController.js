@@ -48,7 +48,7 @@ class UserController {
   };
 
   destroyUser = async (req, res) => {
-    console.log("Come here")
+    console.log("Come here");
     try {
       await User.deleteOne({ _id: req.params.id });
       return res.status(200).json("User has been deleted...");
