@@ -1,4 +1,4 @@
-const Product = require("../models/Product");
+const Product = require("../models/product");
 const getPagination = require("../helper/getPagination");
 class ProductController {
   createProduct = async (req, res) => {

@@ -1,4 +1,4 @@
-const Order = require("../models/Order");
+const Order = require("../models/order");
 
 class OrderController {
   createOrder = async (req, res) => {
