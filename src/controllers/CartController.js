@@ -1,4 +1,4 @@
-const Cart = require("../models/cart");
+const Cart = require("../model/cart");
 
 class CartController {
   createCart = async (req, res) => {

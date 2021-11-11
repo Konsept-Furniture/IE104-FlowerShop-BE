@@ -1,4 +1,4 @@
-const User = require("../models/user");
+const User = require("../model/user");
 const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
 class AuthControler {
