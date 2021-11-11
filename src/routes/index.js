@@ -10,6 +10,9 @@ const initRouter = (app) => {
   app.use("/api/products", productRoute);
   app.use("/api/carts", cartRoute);
   app.use("/api/orders", orderRoute);
+  app.use("/", (req, res) => {
+    return res.json("Hello to Furniture Shop");
+  });
 };
 
 module.exports = initRouter;
