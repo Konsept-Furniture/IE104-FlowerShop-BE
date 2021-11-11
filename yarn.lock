@@ -223,6 +223,11 @@ ci-info@^2.0.0:
   resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-2.0.0.tgz#67a9e964be31a51e15e5010d58e6f12834002f46"
   integrity sha512-5tK7EtrZ0N+OLFMthtqOj4fI2Jeb88C4CAZPu25LDVUgXJ0A3Js4PMGqrn0JU1W0Mh1/Z8wZzYPxqUrXeBboCQ==
 
+cjs-loader@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/cjs-loader/-/cjs-loader-0.1.0.tgz#ab6325323954e0c199aa8ceb601a4236ba838d27"
+  integrity sha512-WgdnnrdNJT+ffiyU2S1zsrhbDjkDH4qgTbGYHPSN6XBVMSg1LbnSnUrVFMic4pWYypcTwkhoNfBB+GFP/73MHQ==
+
 cli-boxes@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/cli-boxes/-/cli-boxes-2.2.1.tgz#ddd5035d25094fce220e9cab40a45840a440318f"
