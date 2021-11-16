@@ -24,8 +24,9 @@ class AuthControler {
     });
     try {
       const savedUser = await newUser.save();
+      const { password, ...orthers } = savedUser;
       const response = {
-        data: savedUser,
+        data: orthers,
         errorCode: 201,
         message: "Success",
       };
