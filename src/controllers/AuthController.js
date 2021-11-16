@@ -63,7 +63,6 @@ class AuthControler {
 
       if (originalPassword != inputPassword) {
         const response = {
-          data: savedUser,
           errorCode: 401,
           message: "Wrong Password",
         };
