@@ -4,7 +4,11 @@ class UserController {
   updateUser = async (req, res) => {
     const user = await User.findOneWithDeleted({ _id: req.params.id });
     if (!user) {
-      return res.status(404).json("User does not exist...");
+      const response = {
+        errorCode: 404,
+        message: "User does not exist...",
+      };
+      return res.json(response);
     }
     if (req.body.password) {
       req.body.password = CryptoJS.AES.encrypt(
@@ -20,18 +24,35 @@ class UserController {
         },
         { new: true }
       );
-      return res.status(200).json(updatedUser);
+      const response = {
+        data: updatedUser,
+        errorCode: 0,
+        message: "Success",
+      };
+      return res.json(response);
     } catch (error) {
-      return res.status(500).json(error);
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
 
   restoreUser = async (req, res) => {
     try {
       await User.restore({ _id: req.params.id });
-      return res.status(200).json("Resore successfully");
+      const response = {
+        errorCode: 0,
+        message: "Resore successfully",
+      };
+      return res.json(response);
     } catch (error) {
-      return res.status(500).json(error);
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
   deleteUser = async (req, res) => {
@@ -39,11 +60,23 @@ class UserController {
       const user = await User.findOne({ _id: req.params.id });
       if (user) {
         await User.delete({ _id: req.params.id });
-        return res.status(200).json("The user has been put in the trash...");
+        const response = {
+          errorCode: 0,
+          message: "The order has been put in the trash...",
+        };
+        return res.json(response);
       }
-      return res.status(404).json("Not found user...");
+      const response = {
+        errorCode: 404,
+        message: "Not found user...",
+      };
+      return res.json(response);
     } catch (error) {
-      return res.status(500).json(error);
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
 
@@ -51,21 +84,42 @@ class UserController {
     console.log("Come here");
     try {
       await User.deleteOne({ _id: req.params.id });
-      return res.status(200).json("User has been deleted...");
+      const response = {
+        errorCode: 0,
+        message: "User has been deleted...",
+      };
+      return res.json(response);
     } catch (error) {
-      return res.status(500).json(error);
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
   readUser = async (req, res) => {
     try {
       const user = await User.findOneWithDeleted({ _id: req.params.id });
       if (!user) {
-        return res.status(404).json("User does not exist...");
+        const response = {
+          errorCode: 404,
+          message: "User does not exist...",
+        };
+        return res.json(response);
       }
       const { password, ...orthers } = user._doc;
-      return res.status(200).json(orthers);
+      const response = {
+        data: orthers,
+        errorCode: 0,
+        message: "Success",
+      };
+      return res.json(response);
     } catch (error) {
-      return res.status(500).json(error);
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
   readAllUser = async (req, res) => {
@@ -73,9 +127,18 @@ class UserController {
     let qDeleted = req.query.deleted;
     try {
       const users = qDeleted ? await User.findDeleted() : await User.find();
-      return res.status(200).json(users);
+      const response = {
+        data: users,
+        errorCode: 0,
+        message: "Success",
+      };
+      return res.json(response);
     } catch (error) {
-      return res.status(500).json(error);
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
   readUserStatistics = async (req, res) => {
@@ -96,9 +159,18 @@ class UserController {
           },
         },
       ]);
-      return res.status(200).json(data);
+      const response = {
+        data: data,
+        errorCode: 0,
+        message: "Success",
+      };
+      return res.json(response);
     } catch (error) {
-      return res.status(500).json(error);
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
 }

@@ -4,11 +4,19 @@ class ProductController {
   createProduct = async (req, res) => {
     const newProduct = new Product(req.body);
     try {
-      console.log("Come here ", req.body);
       const savedProduct = await newProduct.save();
-      return res.status(200).json(savedProduct);
+      const response = {
+        data: savedProduct,
+        errorCode: 0,
+        message: "Success",
+      };
+      return res.json(response);
     } catch (err) {
-      return res.status(500).json(err);
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
   updateProduct = async (req, res) => {
@@ -20,43 +28,85 @@ class ProductController {
         },
         { new: true }
       );
-      return res.status(200).json(updatedProduct);
-    } catch (error) {
-      return res.status(500).json(error);
+      const response = {
+        data: updatedProduct,
+        errorCode: 0,
+        message: "Success",
+      };
+      return res.json(response);
+    } catch (err) {
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
   restoreProduct = async (req, res) => {
     try {
       await Product.restore({ _id: req.params.id });
-      return res.status(200).json("Resore successfully");
-    } catch (error) {
-      return res.status(500).json(error);
+      const response = {
+        errorCode: 0,
+        message: "Resore successfully",
+      };
+      return res.json(response);
+    } catch (err) {
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
   deleteProduct = async (req, res) => {
     console.log("Come here");
     try {
       await Product.delete({ _id: req.params.id });
-      return res.status(200).json("The product has been put in the trash...");
-    } catch (error) {
-      return res.status(500).json(error);
+      const response = {
+        errorCode: 0,
+        message: "The product has been put in the trash...",
+      };
+      return res.json(response);
+    } catch (err) {
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
   destroyProduct = async (req, res) => {
     try {
       await Product.deleteOne({ _id: req.params.id });
-      return res.status(200).json("Product has been deleted...");
-    } catch (error) {
-      return res.status(500).json(error);
+      const response = {
+        errorCode: 0,
+        message: "Product has been deleted...",
+      };
+      return res.json(response);
+    } catch (err) {
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
 
   readProduct = async (req, res) => {
     try {
       const product = await Product.findOne({ _id: req.params.id });
-      return res.status(200).json(product);
-    } catch (error) {
-      return res.status(500).json(error);
+      const response = {
+        data: product,
+        errorCode: 0,
+        message: "Success",
+      };
+      return res.json(response);
+    } catch (err) {
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
 
@@ -78,11 +128,20 @@ class ProductController {
         totalItems: data.totalDocs,
         products: data.docs,
         totalPages: data.totalPages,
-        currentPageIndex: data.page - 1,
+        currentPageIndex: data.page,
       };
-      return res.status(200).json(products);
-    } catch (error) {
-      return res.status(500).json(error);
+      const response = {
+        data: products,
+        errorCode: 0,
+        message: "Success",
+      };
+      return res.json(response);
+    } catch (err) {
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
 
@@ -96,11 +155,20 @@ class ProductController {
         totalItems: data.totalDocs,
         products: data.docs,
         totalPages: data.totalPages,
-        currentPageIndex: data.page - 1,
+        currentPageIndex: data.page,
       };
-      return res.status(200).json(products);
-    } catch (error) {
-      return res.status(500).json(error);
+      const response = {
+        data: products,
+        errorCode: 0,
+        message: "Success",
+      };
+      return res.json(response);
+    } catch (err) {
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
 }
