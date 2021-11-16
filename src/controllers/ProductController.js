@@ -113,7 +113,7 @@ class ProductController {
   readAllProductCategory = async (req, res) => {
     try {
       let data;
-      const { page, size } = req.query;
+      const { page, pageSize } = req.query;
       const category = req.params.category;
       var condition = category
         ? {
@@ -122,12 +122,12 @@ class ProductController {
             },
           }
         : {};
-      const { limit, offset } = getPagination(page, size);
+      const { limit, offset } = getPagination(page, pageSize);
       data = await Product.paginate(condition, { offset, limit });
       let products = data.docs;
       let pagination = {
         totalItems: data.totalDocs,
-        pageSize: size,
+        pageSize: pageSize,
         totalPages: data.totalPages,
         currentPage: data.page,
       };
@@ -150,14 +150,14 @@ class ProductController {
   readAllProduct = async (req, res) => {
     try {
       let data;
-      const { page, size } = req.query;
-      const { limit, offset } = getPagination(page, size);
+      const { page, pageSize } = req.query;
+      const { limit, offset } = getPagination(page, pageSize);
       data = await Product.paginate({}, { offset, limit });
       let products = data.docs;
 
       let pagination = {
         totalItems: data.totalDocs,
-        pageSize: size,
+        pageSize: pageSize,
         totalPages: data.totalPages,
         currentPage: data.page,
       };
