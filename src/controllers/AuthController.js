@@ -5,11 +5,15 @@ class AuthControler {
   //[GET]
   register = async (req, res) => {
     //Phần check xem username có trong hệ thông chưa
-    // const user = await User.findOne({ username: req.body.username });
-
-    // if (user) {
-    //   return res.status(401).json("Username already exists");
-    // }
+    const user = await User.findOneWithDeleted({ username: req.body.username });
+    if (user) {
+      const response = {
+        data: savedUser,
+        errorCode: 401,
+        message: "Username already exists",
+      };
+      return res.json(response);
+    }
     const newUser = new User({
       username: req.body.username,
       email: req.body.email,
