@@ -130,6 +130,7 @@ class ProductController {
         pageSize: pageSize,
         totalPages: data.totalPages,
         currentPage: data.page,
+        category: category,
       };
       const response = {
         data: products,
