@@ -130,7 +130,7 @@ class ProductController {
         totalPages: data.totalPages,
         currentPage: data.page,
         category: category,
-        pageSize: pageSize,
+        pageSize: pageSize || 3,
       };
       const response = {
         data: products,
@@ -158,7 +158,7 @@ class ProductController {
 
       let pagination = {
         totalItems: data.totalDocs,
-        pageSize: pageSize,
+        pageSize: pageSize || 3,
         totalPages: data.totalPages,
         currentPage: data.page,
       };
