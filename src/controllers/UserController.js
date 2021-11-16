@@ -55,7 +55,7 @@ class UserController {
     }
     try {
       const updatedUser = await User.findByIdAndUpdate(
-        req.params.id,
+        req.user.id,
         {
           $set: req.body,
         },
