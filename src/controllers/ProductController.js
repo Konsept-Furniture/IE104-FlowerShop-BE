@@ -155,12 +155,11 @@ class ProductController {
       const { limit, offset } = getPagination(page, pageSize);
       data = await Product.paginate({}, { offset, limit });
       let products = data.docs;
-
       let pagination = {
         totalItems: data.totalDocs,
-        pageSize: pageSize || 3,
         totalPages: data.totalPages,
         currentPage: data.page,
+        pageSize: pageSize || 3,
       };
       const response = {
         data: products,
