@@ -8,7 +8,6 @@ class AuthControler {
     const user = await User.findOneWithDeleted({ username: req.body.username });
     if (user) {
       const response = {
-        data: savedUser,
         errorCode: 401,
         message: "Username already exists",
       };
@@ -25,7 +24,6 @@ class AuthControler {
     });
     try {
       const savedUser = await newUser.save();
-
       const response = {
         data: savedUser,
         errorCode: 201,
@@ -46,7 +44,6 @@ class AuthControler {
       const user = await User.findOne({ username: req.body.username });
       if (!user) {
         const response = {
-          data: savedUser,
           errorCode: 401,
           message: "Wrong User Name",
         };
