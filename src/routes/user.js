@@ -17,7 +17,7 @@ router.put(
 );
 
 //UPDATE USER PERSONAL
-router.put("/update/infor", verifyObjectId, verifyToken, UserController.updateUserInformation);
+router.put("/update/infor", verifyToken, UserController.updateUserInformation);
 
 //RESTORE USER
 router.patch(
@@ -52,12 +52,7 @@ router.get(
 );
 
 //GET USER INFORMATION
-router.get(
-  "/read/infor",
-  verifyObjectId,
-  verifyToken,
-  UserController.readUserInformation
-);
+router.get("/read/infor", verifyToken, UserController.readUserInformation);
 
 //GET ALL STATS
 router.get(
