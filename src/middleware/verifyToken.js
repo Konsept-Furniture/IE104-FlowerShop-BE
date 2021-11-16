@@ -5,12 +5,22 @@ const verifyToken = (req, res, next) => {
   if (authHeader) {
     const token = authHeader.split(" ")[1];
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-      if (err) return res.status(403).json("Token is not valid");
+      if (err) {
+        const response = {
+          errorCode: 403,
+          message: "Token is not valid",
+        };
+        return res.json(response);
+      }
       req.user = user;
       next();
     });
   } else {
-    return res.status(401).json("You are not authenticated!");
+    const response = {
+      errorCode: 401,
+      message: "You are not authenticated!",
+    };
+    return res.json(response);
   }
 };
 
@@ -20,7 +30,11 @@ const verifyTokenAndAuthorization = (req, res, next) => {
     if (req.user.id === req.params.id || req.user.isAdmin) {
       next();
     } else {
-      return res.status(403).json("You are not allowed to do that!");
+      const response = {
+        errorCode: 403,
+        message: "You are not allowed to do that!",
+      };
+      return res.json(response);
     }
   });
 };
@@ -30,7 +44,11 @@ const verifyTokenAndAdmin = (req, res, next) => {
     if (req.user.isAdmin) {
       next();
     } else {
-      return res.status(403).json("You are not allowed to do that!");
+      const response = {
+        errorCode: 403,
+        message: "You are not allowed to do that!",
+      };
+      return res.json(response);
     }
   });
 };

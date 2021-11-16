@@ -1,14 +1,22 @@
-const Order = require("../models/Order");
+const Order = require("../model/order");
 
 class OrderController {
   createOrder = async (req, res) => {
     const newOrder = new Order(req.body);
     try {
-      console.log("Come here ", req.body);
       const savedOrder = await newOrder.save();
-      return res.status(200).json(savedOrder);
+      const response = {
+        data: savedOrder,
+        errorCode: 0,
+        message: "Success",
+      };
+      return res.json(response);
     } catch (err) {
-      return res.status(500).json(err);
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
 
@@ -22,18 +30,35 @@ class OrderController {
         },
         { new: true }
       );
-      return res.status(200).json(updatedOrder);
-    } catch (error) {
-      return res.status(500).json(error);
+      const response = {
+        data: updatedOrder,
+        errorCode: 0,
+        message: "Success",
+      };
+      return res.json(response);
+    } catch (err) {
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
 
   restoreOrder = async (req, res) => {
     try {
       await Order.restore({ _id: req.params.id });
-      return res.status(200).json("Resore successfully");
-    } catch (error) {
-      return res.status(500).json(error);
+      const response = {
+        errorCode: 0,
+        message: "Resore successfully",
+      };
+      return res.json(response);
+    } catch (err) {
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
 
@@ -41,18 +66,34 @@ class OrderController {
     try {
       // console.log(req.params.id);
       await Order.delete({ _id: req.params.id });
-      return res.status(200).json("The order has been put in the trash...");
-    } catch (error) {
-      return res.status(500).json(error);
+      const response = {
+        errorCode: 0,
+        message: "The order has been put in the trash...",
+      };
+      return res.json(response);
+    } catch (err) {
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
 
   destroyOrder = async (req, res) => {
     try {
       await Order.deleteOne({ _id: req.params.id });
-      return res.status(200).json("Order has been deleted...");
-    } catch (error) {
-      return res.status(500).json(error);
+      const response = {
+        errorCode: 0,
+        message: "Order has been deleted...",
+      };
+      return res.json(response);
+    } catch (err) {
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
 
@@ -64,9 +105,18 @@ class OrderController {
       const orders = qDeleted
         ? await Order.findDeleted({ userId: req.params.userId })
         : await Order.find({ userId: req.params.userId });
-      return res.status(200).json(orders);
-    } catch (error) {
-      return res.status(500).json(error);
+      const response = {
+        data: orders,
+        errorCode: 0,
+        message: "Success",
+      };
+      return res.json(response);
+    } catch (err) {
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
 
@@ -74,9 +124,18 @@ class OrderController {
     let qDeleted = req.query.deleted;
     try {
       const orders = qDeleted ? await Order.findDeleted() : await Order.find();
-      return res.status(200).json(orders);
-    } catch (error) {
-      return res.status(500).json(error);
+      const response = {
+        data: orders,
+        errorCode: 0,
+        message: "Success",
+      };
+      return res.json(response);
+    } catch (err) {
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
 
@@ -84,8 +143,6 @@ class OrderController {
     const date = new Date();
     const lastMonth = new Date(date.setMonth(date.getMonth() - 1));
     const previousMonth = new Date(date.setMonth(lastMonth.getMonth() - 2));
-    console.log("check lastmonth", lastMonth);
-    console.log("check previous month", previousMonth);
     try {
       const income = await Order.aggregateWithDeleted([
         { $match: { createdAt: { $gte: previousMonth } } },
@@ -102,9 +159,18 @@ class OrderController {
           },
         },
       ]);
-      return res.status(200).json(income);
-    } catch (error) {
-      return res.status(500).json(error);
+      const response = {
+        data: income,
+        errorCode: 0,
+        message: "Success",
+      };
+      return res.json(response);
+    } catch (err) {
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
 }

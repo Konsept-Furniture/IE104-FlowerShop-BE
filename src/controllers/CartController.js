@@ -1,4 +1,4 @@
-const Cart = require("../models/Cart");
+const Cart = require("../model/cart");
 
 class CartController {
   createCart = async (req, res) => {
@@ -6,9 +6,18 @@ class CartController {
     try {
       // console.log("Come here ", req.body);
       const savedCart = await newCart.save();
-      return res.status(200).json(savedCart);
+      const response = {
+        data: savedCart,
+        errorCode: 0,
+        message: "Success",
+      };
+      return res.json(response);
     } catch (err) {
-      return res.status(500).json(err);
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
   updateCart = async (req, res) => {
@@ -21,35 +30,70 @@ class CartController {
         },
         { new: true }
       );
-      return res.status(200).json(updatedCart);
+      const response = {
+        data: updatedCart,
+        errorCode: 0,
+        message: "Success",
+      };
+      return res.json(response);
     } catch (error) {
-      return res.status(500).json(error);
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
   deleteCart = async (req, res) => {
     try {
       // console.log(req.params.id);
       await Cart.findByIdAndDelete(req.params.id);
-      return res.status(200).json("Cart has been deleted...");
+      const response = {
+        errorCode: 0,
+        message: "Cart has been deleted...",
+      };
+      return res.json(response);
     } catch (error) {
-      return res.status(500).json(error);
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
   readUserCart = async (req, res) => {
-    console.log(">>Check get cart", req.params.userId);
+    // console.log(">>Check get cart", req.params.userId);
     try {
       const cart = await Cart.find({ userId: req.params.userId });
-      return res.status(200).json(cart);
+      const response = {
+        data: cart,
+        errorCode: 0,
+        message: "Success",
+      };
+      return res.json(response);
     } catch (error) {
-      return res.status(500).json(error);
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
   readAllCart = async (req, res) => {
     try {
       const carts = await Cart.find();
-      res.status(200).json(carts);
+      const response = {
+        data: carts,
+        errorCode: 0,
+        message: "Success",
+      };
+      return res.json(response);
     } catch (error) {
-      return res.status(500).json(error);
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
 }

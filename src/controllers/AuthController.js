@@ -1,15 +1,18 @@
-const User = require("../models/User");
+const User = require("../model/user");
 const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
 class AuthControler {
   //[GET]
   register = async (req, res) => {
     //Phần check xem username có trong hệ thông chưa
-    // const user = await User.findOne({ username: req.body.username });
-
-    // if (user) {
-    //   return res.status(401).json("Username already exists");
-    // }
+    const user = await User.findOneWithDeleted({ username: req.body.username });
+    if (user) {
+      const response = {
+        errorCode: 401,
+        message: "Username already exists",
+      };
+      return res.json(response);
+    }
     const newUser = new User({
       username: req.body.username,
       email: req.body.email,
@@ -21,10 +24,19 @@ class AuthControler {
     });
     try {
       const savedUser = await newUser.save();
-
-      return res.status(201).json(savedUser);
+      const { password, ...orthers } = savedUser;
+      const response = {
+        data: orthers,
+        errorCode: 201,
+        message: "Success",
+      };
+      return res.json(response);
     } catch (err) {
-      return res.status(500).json(err);
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
 
@@ -32,7 +44,11 @@ class AuthControler {
     try {
       const user = await User.findOne({ username: req.body.username });
       if (!user) {
-        return res.status(401).json("Wrong User Name");
+        const response = {
+          errorCode: 401,
+          message: "Wrong User Name",
+        };
+        return res.json(response);
       }
 
       const hashedPassword = CryptoJS.AES.decrypt(
@@ -46,7 +62,12 @@ class AuthControler {
       // console.log(">>Check inputpass", inputPassword);
 
       if (originalPassword != inputPassword) {
-        return res.status(401).json("Wrong Password");
+        const response = {
+          data: savedUser,
+          errorCode: 401,
+          message: "Wrong Password",
+        };
+        return res.json(response);
       }
 
       const accessToken = jwt.sign(
@@ -60,9 +81,18 @@ class AuthControler {
         }
       );
       const { password, ...orthers } = user._doc;
-      return res.status(200).json({ ...orthers, accessToken });
+      const response = {
+        data: { ...orthers, accessToken },
+        errorCode: 0,
+        message: "Success",
+      };
+      return res.json(response);
     } catch (err) {
-      return res.status(500).json(err);
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
     }
   };
 }
