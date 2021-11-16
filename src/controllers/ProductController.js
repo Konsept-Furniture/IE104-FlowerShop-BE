@@ -127,10 +127,10 @@ class ProductController {
       let products = data.docs;
       let pagination = {
         totalItems: data.totalDocs,
-        pageSize: pageSize,
         totalPages: data.totalPages,
         currentPage: data.page,
         category: category,
+        pageSize: pageSize,
       };
       const response = {
         data: products,
