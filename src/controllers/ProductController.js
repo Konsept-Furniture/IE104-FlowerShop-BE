@@ -125,14 +125,17 @@ class ProductController {
       const { limit, offset } = getPagination(page, size);
       data = await Product.paginate(condition, { offset, limit });
       let products = {
+        products: data.docs,
+      };
+      let pagination = {
         totalItems: data.totalDocs,
         pageSize: size,
         totalPages: data.totalPages,
         currentPage: data.page,
-        products: data.docs,
       };
       const response = {
         data: products,
+        pagination: pagination,
         errorCode: 0,
         message: "Success",
       };
@@ -153,14 +156,17 @@ class ProductController {
       const { limit, offset } = getPagination(page, size);
       data = await Product.paginate({}, { offset, limit });
       let products = {
+        products: data.docs,
+      };
+      let pagination = {
         totalItems: data.totalDocs,
         pageSize: size,
         totalPages: data.totalPages,
         currentPage: data.page,
-        products: data.docs,
       };
       const response = {
         data: products,
+        pagination: pagination,
         errorCode: 0,
         message: "Success",
       };
