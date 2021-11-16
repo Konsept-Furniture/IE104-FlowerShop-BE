@@ -1,7 +1,7 @@
 const express = require("express");
 const {
-  verifyTokenAndAuthorization,
   verifyTokenAndAdmin,
+  verifyToken,
 } = require("../middleware/verifyToken");
 const verifyObjectId = require("../middleware/verifyObjectId");
 const router = express.Router();
@@ -12,15 +12,18 @@ const UserController = require("../controllers/UserController");
 router.put(
   "/:id",
   verifyObjectId,
-  verifyTokenAndAuthorization,
+  verifyTokenAndAdmin,
   UserController.updateUser
 );
+
+//UPDATE USER PERSONAL
+router.put("/update/infor", verifyObjectId, verifyToken, UserController.updateUserInformation);
 
 //RESTORE USER
 router.patch(
   "/:id",
   verifyObjectId,
-  verifyTokenAndAuthorization,
+  verifyTokenAndAdmin,
   UserController.restoreUser
 );
 
@@ -28,7 +31,7 @@ router.patch(
 router.delete(
   "/:id",
   verifyObjectId,
-  verifyTokenAndAuthorization,
+  verifyTokenAndAdmin,
   UserController.deleteUser
 );
 
@@ -36,7 +39,7 @@ router.delete(
 router.delete(
   "/destroy/:id",
   verifyObjectId,
-  verifyTokenAndAuthorization,
+  verifyTokenAndAdmin,
   UserController.destroyUser
 );
 
@@ -46,6 +49,14 @@ router.get(
   verifyObjectId,
   verifyTokenAndAdmin,
   UserController.readUser
+);
+
+//GET USER INFORMATION
+router.get(
+  "/read/infor",
+  verifyObjectId,
+  verifyToken,
+  UserController.readUserInformation
 );
 
 //GET ALL STATS

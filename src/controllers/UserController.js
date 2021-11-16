@@ -38,6 +38,43 @@ class UserController {
       return res.json(response);
     }
   };
+  updateUserInformation = async (req, res) => {
+    const user = await User.findOneWithDeleted({ _id: req.user.id });
+    if (!user) {
+      const response = {
+        errorCode: 404,
+        message: "User does not exist...",
+      };
+      return res.json(response);
+    }
+    if (req.body.password) {
+      req.body.password = CryptoJS.AES.encrypt(
+        req.body.password,
+        process.env.PASS_SECRET
+      ).toString();
+    }
+    try {
+      const updatedUser = await User.findByIdAndUpdate(
+        req.params.id,
+        {
+          $set: req.body,
+        },
+        { new: true }
+      );
+      const response = {
+        data: updatedUser,
+        errorCode: 0,
+        message: "Success",
+      };
+      return res.json(response);
+    } catch (error) {
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
+    }
+  };
 
   restoreUser = async (req, res) => {
     try {
@@ -100,6 +137,31 @@ class UserController {
   readUser = async (req, res) => {
     try {
       const user = await User.findOneWithDeleted({ _id: req.params.id });
+      if (!user) {
+        const response = {
+          errorCode: 404,
+          message: "User does not exist...",
+        };
+        return res.json(response);
+      }
+      const { password, ...orthers } = user._doc;
+      const response = {
+        data: orthers,
+        errorCode: 0,
+        message: "Success",
+      };
+      return res.json(response);
+    } catch (error) {
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
+    }
+  };
+  readUserInformation = async (req, res) => {
+    try {
+      const user = await User.findOneWithDeleted({ _id: req.user.id });
       if (!user) {
         const response = {
           errorCode: 404,
