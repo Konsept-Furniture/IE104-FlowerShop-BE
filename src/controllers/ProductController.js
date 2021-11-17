@@ -1,5 +1,6 @@
 const Product = require("../model/product");
 const getPagination = require("../helper/getPagination");
+
 class ProductController {
   createProduct = async (req, res) => {
     const newProduct = new Product(req.body);
@@ -114,17 +115,23 @@ class ProductController {
     try {
       let data;
       const { page, pageSize } = req.query;
+      const { minPrice, maxPrice } = req.query;
       const category = req.params.category;
       var condition = category
         ? {
             categories: {
               $in: [category],
             },
+            price: {
+              $gte: minPrice,
+              $lt: maxPrice,
+            },
           }
         : {};
       const { limit, offset } = getPagination(page, pageSize);
       data = await Product.paginate(condition, { offset, limit });
       let products = data.docs;
+
       let pagination = {
         totalItems: data.totalDocs,
         totalPages: data.totalPages,
