@@ -13,7 +13,7 @@ const ProductSchema = new mongoose.Schema(
     size: { type: Array },
     color: { type: Array },
     price: { type: Number, required: true },
-    countInStock: { type: Number, default: 0 },
+    countInStock: { type: Number, default: 100 },
     countRating: { type: Number, default: 1 },
     rating: { type: String, default: "5.0" },
     popular: { type: String, default: randomPopular },
