@@ -123,8 +123,8 @@ class ProductController {
               $in: [category],
             },
             price: {
-              $gte: minPrice,
-              $lt: maxPrice,
+              $gte: minPrice || 0,
+              $lt: maxPrice || 1000,
             },
           }
         : {};
