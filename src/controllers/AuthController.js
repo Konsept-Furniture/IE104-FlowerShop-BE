@@ -97,6 +97,13 @@ class AuthControler {
       return res.json(response);
     }
   };
+
+  checkToken = async (req, res) => {
+    return res.json({
+      errorCode: 0,
+      message: "Success",
+    });
+  };
 }
 
 module.exports = new AuthControler();
