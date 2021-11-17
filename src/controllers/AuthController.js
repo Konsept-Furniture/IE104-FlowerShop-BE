@@ -82,7 +82,7 @@ class AuthControler {
       const { password, ...orthers } = user._doc;
       const response = {
         data: {
-          data: accessToken,
+          accessToken: accessToken,
           user: orthers,
         },
         errorCode: 0,
