@@ -81,7 +81,10 @@ class AuthControler {
       );
       const { password, ...orthers } = user._doc;
       const response = {
-        data: { ...orthers, accessToken },
+        data: {
+          data: accessToken,
+          user: orthers,
+        },
         errorCode: 0,
         message: "Success",
       };
