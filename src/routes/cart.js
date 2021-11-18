@@ -1,7 +1,6 @@
 const express = require("express");
 const {
   verifyToken,
-  verifyTokenAndAuthorization,
   verifyTokenAndAdmin,
 } = require("../middleware/verifyToken");
 const verifyObjectId = require("../middleware/verifyObjectId");
@@ -11,27 +10,18 @@ const CartController = require("../controllers/CartController");
 router.post("/", verifyToken, CartController.createCart);
 
 //UPDATE CART - OK
-router.put(
-  "/:id",
-  verifyObjectId,
-  verifyTokenAndAuthorization,
-  CartController.updateCart
-);
+router.put("/:id", verifyObjectId, verifyToken, CartController.updateCart);
 
 //DELETE CART
 router.delete(
   "/:id",
   verifyObjectId,
-  verifyTokenAndAuthorization,
+  verifyTokenAndAdmin,
   CartController.deleteCart
 );
 
 //GET USER CART
-router.get(
-  "/:userId",
-  verifyTokenAndAuthorization,
-  CartController.readUserCart
-);
+router.get("/readUserCart", verifyToken, CartController.readUserCart);
 
 //GET ALL CART
 router.get("/", verifyTokenAndAdmin, CartController.readAllCart);

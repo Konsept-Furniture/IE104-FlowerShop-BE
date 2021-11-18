@@ -2,6 +2,10 @@ const Cart = require("../model/cart");
 
 class CartController {
   createCart = async (req, res) => {
+    req.body = {
+      ...req.body,
+      userId: req.user.id,
+    };
     const newCart = new Cart(req.body);
     try {
       // console.log("Come here ", req.body);
@@ -64,7 +68,7 @@ class CartController {
   readUserCart = async (req, res) => {
     // console.log(">>Check get cart", req.params.userId);
     try {
-      const cart = await Cart.find({ userId: req.params.userId });
+      const cart = await Cart.findOne({ userId: req.user.id });
       const response = {
         data: cart,
         errorCode: 0,
