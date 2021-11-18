@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 
 const PurchaseOrderSchema = new mongoose.Schema(
   {
-    userId: { type: String, required: true },
     supplierId: { type: String, required: true },
     products: [
       {
