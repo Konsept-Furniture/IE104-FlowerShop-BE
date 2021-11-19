@@ -9,6 +9,9 @@ const CartController = require("../controllers/CartController");
 //CREATE CART- OK
 router.post("/", verifyToken, CartController.createCart);
 
+//ADD ITEM TO CART - OK
+router.put("/add-item/:id", verifyToken, CartController.addItemToCart);
+
 //UPDATE CART - OK
 router.put("/:id", verifyObjectId, verifyToken, CartController.updateCart);
 

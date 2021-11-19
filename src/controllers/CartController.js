@@ -48,6 +48,34 @@ class CartController {
       return res.json(response);
     }
   };
+  addItemToCart = async (req, res) => {
+    //   console.log("Check>>here", req.params.id);
+    console.log("Come here");
+    const { productId, quantity } = req.body;
+    let item = { productId, quantity };
+
+    try {
+      const updatedCart = await Cart.findByIdAndUpdate(
+        req.params.id,
+        {
+          $push: { products: item },
+        },
+        { new: true }
+      );
+      const response = {
+        data: updatedCart,
+        errorCode: 0,
+        message: "Add Item Successfull",
+      };
+      return res.json(response);
+    } catch (error) {
+      const response = {
+        errorCode: 500,
+        message: err,
+      };
+      return res.json(response);
+    }
+  };
   deleteCart = async (req, res) => {
     try {
       // console.log(req.params.id);
