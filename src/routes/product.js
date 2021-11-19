@@ -28,11 +28,11 @@ router.get("/:id", verifyObjectId, ProductController.readProduct);
 
 //GET ALL PRODUCT CATEGORY
 router.get(
-  "/product-category/:category",
+  "/",
   ProductController.readAllProductCategory
 );
 
 //GET ALL PRODUCTS
-router.get("/", ProductController.readAllProduct);
+router.get("/products", ProductController.readAllProduct);
 
 module.exports = router;

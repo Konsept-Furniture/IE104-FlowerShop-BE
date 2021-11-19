@@ -1,17 +1,13 @@
-const Cart = require("../model/cart");
+const Category = require("../model/category");
 
-class CartController {
-  createCart = async (req, res) => {
-    req.body = {
-      ...req.body,
-      userId: req.user.id,
-    };
-    const newCart = new Cart(req.body);
+class CategoryController {
+  createCategory = async (req, res) => {
+    const newCategory = new Category(req.body);
     try {
       // console.log("Come here ", req.body);
-      const savedCart = await newCart.save();
+      const savedCategory = await newCategory.save();
       const response = {
-        data: savedCart,
+        data: savedCategory,
         errorCode: 0,
         message: "Success",
       };
@@ -24,10 +20,10 @@ class CartController {
       return res.json(response);
     }
   };
-  updateCart = async (req, res) => {
+  updateCategory = async (req, res) => {
     //   console.log("Check>>here", req.params.id);
     try {
-      const updatedCart = await Cart.findByIdAndUpdate(
+      const updatedCategory = await Category.findByIdAndUpdate(
         req.params.id,
         {
           $set: req.body,
@@ -35,7 +31,7 @@ class CartController {
         { new: true }
       );
       const response = {
-        data: updatedCart,
+        data: updatedCategory,
         errorCode: 0,
         message: "Success",
       };
@@ -48,41 +44,13 @@ class CartController {
       return res.json(response);
     }
   };
-  addItemToCart = async (req, res) => {
-    //   console.log("Check>>here", req.params.id);
-    console.log("Come here");
-    const { productId, quantity } = req.body;
-    let item = { productId, quantity };
-
-    try {
-      const updatedCart = await Cart.findByIdAndUpdate(
-        req.params.id,
-        {
-          $push: { products: item },
-        },
-        { new: true }
-      );
-      const response = {
-        data: updatedCart,
-        errorCode: 0,
-        message: "Add Item Successfull",
-      };
-      return res.json(response);
-    } catch (error) {
-      const response = {
-        errorCode: 500,
-        message: err,
-      };
-      return res.json(response);
-    }
-  };
-  deleteCart = async (req, res) => {
+  deleteCategory = async (req, res) => {
     try {
       // console.log(req.params.id);
-      await Cart.findByIdAndDelete(req.params.id);
+      await Category.findByIdAndDelete(req.params.id);
       const response = {
         errorCode: 0,
-        message: "Cart has been deleted...",
+        message: "Category has been deleted...",
       };
       return res.json(response);
     } catch (error) {
@@ -93,12 +61,11 @@ class CartController {
       return res.json(response);
     }
   };
-  readUserCart = async (req, res) => {
-    // console.log(">>Check get cart", req.params.userId);
+  readCategory = async (req, res) => {
     try {
-      const cart = await Cart.findOne({ userId: req.user.id });
+      const category = await Category.findById(req.params.id);
       const response = {
-        data: cart,
+        data: category,
         errorCode: 0,
         message: "Success",
       };
@@ -111,11 +78,11 @@ class CartController {
       return res.json(response);
     }
   };
-  readAllCart = async (req, res) => {
+  readAllCategory = async (req, res) => {
     try {
-      const carts = await Cart.find();
+      const categories = await Category.find();
       const response = {
-        data: carts,
+        data: categories,
         errorCode: 0,
         message: "Success",
       };
@@ -130,4 +97,4 @@ class CartController {
   };
 }
 
-module.exports = new CartController();
+module.exports = new CategoryController();

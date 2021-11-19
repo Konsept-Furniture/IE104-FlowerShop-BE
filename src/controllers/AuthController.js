@@ -1,30 +1,39 @@
 const User = require("../model/user");
+const Cart = require("../model/cart");
 const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
 class AuthControler {
   //[GET]
   register = async (req, res) => {
-    //Phần check xem username có trong hệ thông chưa
-    const user = await User.findOneWithDeleted({ username: req.body.username });
-    if (user) {
-      const response = {
-        errorCode: 401,
-        message: "Username already exists",
-      };
-      return res.json(response);
-    }
-    const newUser = new User({
-      username: req.body.username,
-      email: req.body.email,
-      password: CryptoJS.AES.encrypt(
-        req.body.password,
-        process.env.PASS_SECRET
-      ).toString(),
-      isAdmin: req.body.isAdmin,
-    });
     try {
+      //Phần check xem username có trong hệ thông chưa
+      const user = await User.findOneWithDeleted({
+        username: req.body.username,
+      });
+      if (user) {
+        const response = {
+          errorCode: 401,
+          message: "Username already exists",
+        };
+        return res.json(response);
+      }
+      const newUser = new User({
+        username: req.body.username,
+        email: req.body.email,
+        password: CryptoJS.AES.encrypt(
+          req.body.password,
+          process.env.PASS_SECRET
+        ).toString(),
+        isAdmin: req.body.isAdmin,
+      });
       const savedUser = await newUser.save();
-      const { password, ...orthers } = savedUser;
+      const { password, ...orthers } = savedUser._doc;
+      const content = {
+        userId: orthers._id,
+        products: [],
+      };
+      const newCart = new Cart(content);
+      await newCart.save();
       const response = {
         data: orthers,
         errorCode: 201,
@@ -63,7 +72,6 @@ class AuthControler {
 
       if (originalPassword != inputPassword) {
         const response = {
-          data: savedUser,
           errorCode: 401,
           message: "Wrong Password",
         };
@@ -82,7 +90,10 @@ class AuthControler {
       );
       const { password, ...orthers } = user._doc;
       const response = {
-        data: { ...orthers, accessToken },
+        data: {
+          accessToken: accessToken,
+          user: orthers,
+        },
         errorCode: 0,
         message: "Success",
       };
@@ -94,6 +105,13 @@ class AuthControler {
       };
       return res.json(response);
     }
+  };
+
+  checkToken = async (req, res) => {
+    return res.json({
+      errorCode: 0,
+      message: "Success",
+    });
   };
 }
 

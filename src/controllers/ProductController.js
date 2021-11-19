@@ -1,5 +1,6 @@
 const Product = require("../model/product");
 const getPagination = require("../helper/getPagination");
+
 class ProductController {
   createProduct = async (req, res) => {
     const newProduct = new Product(req.body);
@@ -113,25 +114,37 @@ class ProductController {
   readAllProductCategory = async (req, res) => {
     try {
       let data;
-      const { page, size } = req.query;
-      const category = req.params.category;
+      const { page, pageSize, minPrice, maxPrice, category } = req.query;
       var condition = category
         ? {
             categories: {
               $in: [category],
             },
+            price: {
+              $gte: minPrice || 0,
+              $lt: maxPrice || 1000,
+            },
           }
-        : {};
-      const { limit, offset } = getPagination(page, size);
+        : {
+            price: {
+              $gte: minPrice || 0,
+              $lt: maxPrice || 1000,
+            },
+          };
+      const { limit, offset } = getPagination(page, pageSize);
       data = await Product.paginate(condition, { offset, limit });
-      let products = {
+      let products = data.docs;
+
+      let pagination = {
         totalItems: data.totalDocs,
-        products: data.docs,
         totalPages: data.totalPages,
-        currentPageIndex: data.page,
+        currentPage: data.page,
+        category: category,
+        pageSize: +pageSize || 3,
       };
       const response = {
         data: products,
+        pagination: pagination,
         errorCode: 0,
         message: "Success",
       };
@@ -148,17 +161,19 @@ class ProductController {
   readAllProduct = async (req, res) => {
     try {
       let data;
-      const { page, size } = req.query;
-      const { limit, offset } = getPagination(page, size);
+      const { page, pageSize } = req.query;
+      const { limit, offset } = getPagination(page, pageSize);
       data = await Product.paginate({}, { offset, limit });
-      let products = {
+      let products = data.docs;
+      let pagination = {
         totalItems: data.totalDocs,
-        products: data.docs,
         totalPages: data.totalPages,
-        currentPageIndex: data.page,
+        currentPage: data.page,
+        pageSize: +pageSize || 3,
       };
       const response = {
         data: products,
+        pagination: pagination,
         errorCode: 0,
         message: "Success",
       };
