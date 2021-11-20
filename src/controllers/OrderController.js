@@ -8,7 +8,7 @@ class OrderController {
       const response = {
         data: savedOrder,
         errorCode: 0,
-        message: "Success",
+        message: "Create order successfully",
       };
       return res.json(response);
     } catch (err) {

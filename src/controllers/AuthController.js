@@ -55,7 +55,7 @@ class AuthControler {
       if (!user) {
         const response = {
           errorCode: 401,
-          message: "Wrong User Name",
+          message: "Incorrect username",
         };
         return res.json(response);
       }
@@ -73,7 +73,7 @@ class AuthControler {
       if (originalPassword != inputPassword) {
         const response = {
           errorCode: 401,
-          message: "Wrong Password",
+          message: "Incorrect password",
         };
         return res.json(response);
       }
@@ -95,7 +95,7 @@ class AuthControler {
           user: orthers,
         },
         errorCode: 0,
-        message: "Success",
+        message: "Login successfully",
       };
       return res.json(response);
     } catch (err) {

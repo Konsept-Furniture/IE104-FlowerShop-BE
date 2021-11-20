@@ -9,7 +9,7 @@ class ProductController {
       const response = {
         data: savedProduct,
         errorCode: 0,
-        message: "Success",
+        message: "Create product successfully",
       };
       return res.json(response);
     } catch (err) {
@@ -32,7 +32,7 @@ class ProductController {
       const response = {
         data: updatedProduct,
         errorCode: 0,
-        message: "Success",
+        message: "Update product successfully",
       };
       return res.json(response);
     } catch (err) {
@@ -48,7 +48,7 @@ class ProductController {
       await Product.restore({ _id: req.params.id });
       const response = {
         errorCode: 0,
-        message: "Resore successfully",
+        message: "Restore successfully",
       };
       return res.json(response);
     } catch (err) {

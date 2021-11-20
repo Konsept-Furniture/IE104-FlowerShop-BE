@@ -27,7 +27,7 @@ class UserController {
       const response = {
         data: updatedUser,
         errorCode: 0,
-        message: "Success",
+        message: "Update user successfully",
       };
       return res.json(response);
     } catch (error) {
@@ -64,7 +64,7 @@ class UserController {
       const response = {
         data: updatedUser,
         errorCode: 0,
-        message: "Success",
+        message: "Updated information successfully",
       };
       return res.json(response);
     } catch (error) {

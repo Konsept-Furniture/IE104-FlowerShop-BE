@@ -13,7 +13,7 @@ class CartController {
       const response = {
         data: savedCart,
         errorCode: 0,
-        message: "Success",
+        message: "Create cart successfully",
       };
       return res.json(response);
     } catch (err) {
@@ -37,7 +37,7 @@ class CartController {
       const response = {
         data: updatedCart,
         errorCode: 0,
-        message: "Success",
+        message: "Update cart successfully",
       };
       return res.json(response);
     } catch (error) {
@@ -65,7 +65,7 @@ class CartController {
       const response = {
         data: updatedCart,
         errorCode: 0,
-        message: "Add Item Successfull",
+        message: "Added item to cart successful",
       };
       return res.json(response);
     } catch (error) {

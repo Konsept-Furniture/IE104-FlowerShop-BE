@@ -9,7 +9,7 @@ class CategoryController {
       const response = {
         data: savedCategory,
         errorCode: 0,
-        message: "Success",
+        message: "Create category successfully",
       };
       return res.json(response);
     } catch (err) {
@@ -33,7 +33,7 @@ class CategoryController {
       const response = {
         data: updatedCategory,
         errorCode: 0,
-        message: "Success",
+        message: "Update category successfully",
       };
       return res.json(response);
     } catch (error) {
