@@ -132,18 +132,33 @@ class ProductController {
               $lt: maxPrice || 1000,
             },
           };
+
+      let test = orderBy.split("-");
+      console.log(test);
       switch (orderBy) {
         case "price-desc":
-          filter = { price: -1 };
+          filter = { price: "desc" };
           break;
         case "price":
           filter = { price: 1 };
           break;
-        case "rating":
+        case "rating-desc":
           filter = { rating: -1 };
           break;
-        case "popular":
+        case "rating":
+          filter = { rating: 1 };
+          break;
+        case "popular-desc":
           filter = { popular: -1 };
+          break;
+        case "popular":
+          filter = { popular: 1 };
+          break;
+        case "date-desc":
+          filter = { createdAt: -1 };
+          break;
+        case "date":
+          filter = { createdAt: 1 };
           break;
         default:
           break;
