@@ -113,7 +113,8 @@ class ProductController {
 
   readAllProductCategory = async (req, res) => {
     try {
-      let data, filter;
+      let data;
+      let filter = {};
       const { page, pageSize, minPrice, maxPrice, category, orderBy } =
         req.query;
       let condition = category
@@ -133,41 +134,18 @@ class ProductController {
             },
           };
 
-      let test = orderBy.split("-");
-      console.log(test);
-      switch (orderBy) {
-        case "price-desc":
-          filter = { price: "desc" };
-          break;
-        case "price":
-          filter = { price: 1 };
-          break;
-        case "rating-desc":
-          filter = { rating: -1 };
-          break;
-        case "rating":
-          filter = { rating: 1 };
-          break;
-        case "popular-desc":
-          filter = { popular: -1 };
-          break;
-        case "popular":
-          filter = { popular: 1 };
-          break;
-        case "date-desc":
-          filter = { createdAt: -1 };
-          break;
-        case "date":
-          filter = { createdAt: 1 };
-          break;
-        default:
-          break;
+      if (orderBy) {
+        let arraySort = orderBy.split("-");
+        filter = {
+          [arraySort[0]]: arraySort[1],
+        };
       }
+
       const { limit, offset } = getPagination(page, pageSize);
       data = await Product.paginate(condition, {
         offset,
         limit,
-        sort: filter || {},
+        sort: filter,
       });
       let products = data.docs;
 
