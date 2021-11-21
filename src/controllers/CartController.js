@@ -52,6 +52,7 @@ class CartController {
     //   console.log("Check>>here", req.params.id);
     console.log("Come here");
     const { productId, quantity } = req.body;
+
     let item = { productId, quantity };
 
     try {

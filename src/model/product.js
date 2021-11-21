@@ -16,7 +16,7 @@ const ProductSchema = new mongoose.Schema(
     countInStock: { type: Number, default: 100 },
     countRating: { type: Number, default: 1 },
     rating: { type: String, default: "5.0" },
-    popular: { type: String, default: randomPopular },
+    popular: { type: Number, default: randomPopular },
     inStock: { type: Boolean, default: true },
   },
   { timestamps: true }
@@ -27,9 +27,6 @@ ProductSchema.plugin(mongooseDelete, {
   overrideMethods: "all",
 });
 
-
 ProductSchema.plugin(mongoosePaginate);
-
-
 
 module.exports = mongoose.model("Product", ProductSchema);
