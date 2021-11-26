@@ -49,17 +49,41 @@ class CartController {
     }
   };
   addItemToCart = async (req, res) => {
-    //   console.log("Check>>here", req.params.id);
-    console.log("Come here");
-    const { productId, quantity } = req.body;
-
-    let item = { productId, quantity };
-
     try {
+      //get data
+      const { productId, quantity } = req.body;
+      let item = { productId, quantity };
+
+      //Check validate
+      const cart = await Cart.findOne({ userId: req.user.id });
+      if (cart._id.toString() !== req.params.id) {
+        const response = {
+          errorCode: 400,
+          message: "Incorrect information",
+        };
+        return res.json(response);
+      }
+
+      //Xu li du lieu
+      let oldProducts = cart.products;
+      const filterProducts = oldProducts.filter(
+        (product) => product.productId !== productId
+      );
+      console.log("here");
+      let products = filterProducts.map((item) => {
+        const p = {
+          productId: item.productId,
+          quantity: item.quantity,
+        };
+        return p;
+      });
+      products.unshift(item);
+
+      //Update
       const updatedCart = await Cart.findByIdAndUpdate(
         req.params.id,
         {
-          $push: { products: item },
+          $set: { products },
         },
         { new: true }
       );
@@ -72,7 +96,7 @@ class CartController {
     } catch (error) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: error,
       };
       return res.json(response);
     }
@@ -90,6 +114,42 @@ class CartController {
       const response = {
         errorCode: 500,
         message: err,
+      };
+      return res.json(response);
+    }
+  };
+  deleteCartItem = async (req, res) => {
+    try {
+      //get data
+      const { productId } = req.body;
+      let item = { productId };
+
+      //Check validate
+      const cart = await Cart.findOne({ userId: req.user.id });
+      if (cart._id.toString() !== req.params.id) {
+        const response = {
+          errorCode: 400,
+          message: "Incorrect information",
+        };
+        return res.json(response);
+      }
+
+      //Update
+      const updatedCart = await Cart.findByIdAndUpdate(
+        req.params.id,
+        { $pull: { products: item } },
+        { new: true }
+      );
+      const response = {
+        data: updatedCart,
+        errorCode: 0,
+        message: "Delete Item Successfull",
+      };
+      return res.json(response);
+    } catch (error) {
+      const response = {
+        errorCode: 500,
+        message: error,
       };
       return res.json(response);
     }
