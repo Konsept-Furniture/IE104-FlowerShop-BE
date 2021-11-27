@@ -24,9 +24,9 @@ router.delete(
 );
 
 //GET CATEGORY
-router.get("/:id", verifyTokenAndAdmin, CategoryController.readCategory);
+router.get("/:id", CategoryController.readCategory);
 
 //GET ALL CATEGORY
-router.get("/", verifyTokenAndAdmin, CategoryController.readAllCategory);
+router.get("/", CategoryController.readAllCategory);
 
 module.exports = router;
