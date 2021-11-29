@@ -115,7 +115,7 @@ class ProductController {
     try {
       let data;
       let filter = {};
-      const { page, pageSize, minPrice, maxPrice, category, orderBy } =
+      const { page, pageSize, minPrice, maxPrice, category, orderBy, title } =
         req.query;
       let condition = category
         ? {
@@ -133,6 +133,14 @@ class ProductController {
               $lt: maxPrice || 1000,
             },
           };
+      let qSearch = {
+        title: {
+          $regex: new RegExp(title, "i") || "",
+        },
+      };
+      condition = title ? { ...condition, ...qSearch } : condition;
+
+      console.log(condition);
 
       if (orderBy) {
         let arraySort = orderBy.split("-");
