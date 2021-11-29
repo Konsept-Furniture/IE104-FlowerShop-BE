@@ -36,7 +36,7 @@ class AuthControler {
       await newCart.save();
       const response = {
         data: orthers,
-        errorCode: 201,
+        errorCode: 0,
         message: "Success",
       };
       return res.json(response);

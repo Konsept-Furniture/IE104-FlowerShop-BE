@@ -15,6 +15,9 @@ router.put("/add-item/:id", verifyToken, CartController.addItemToCart);
 //UPDATE CART - OK
 router.put("/:id", verifyObjectId, verifyToken, CartController.updateCart);
 
+//DELETE CART ITEM
+router.delete("/delete/:id", verifyToken, CartController.deleteCartItem);
+
 //DELETE CART
 router.delete(
   "/:id",
