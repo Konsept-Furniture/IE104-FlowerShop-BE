@@ -138,7 +138,7 @@ class ProductController {
           $regex: new RegExp(search, "i") || "",
         },
       };
-      condition = title ? { ...condition, ...qSearch } : condition;
+      condition = search ? { ...condition, ...qSearch } : condition;
 
       console.log(condition);
 
