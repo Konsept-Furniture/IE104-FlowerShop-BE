@@ -115,7 +115,7 @@ class ProductController {
     try {
       let data;
       let filter = {};
-      const { page, pageSize, minPrice, maxPrice, category, orderBy, title } =
+      const { page, pageSize, minPrice, maxPrice, category, orderBy, search } =
         req.query;
       let condition = category
         ? {
@@ -135,7 +135,7 @@ class ProductController {
           };
       let qSearch = {
         title: {
-          $regex: new RegExp(title, "i") || "",
+          $regex: new RegExp(search, "i") || "",
         },
       };
       condition = title ? { ...condition, ...qSearch } : condition;
