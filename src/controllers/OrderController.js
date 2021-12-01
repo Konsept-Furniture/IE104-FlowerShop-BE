@@ -6,7 +6,7 @@ class OrderController {
       ...req.body,
       userId: req.user.id,
     };
-    const newOrder = new Order(req.body.da);
+    const newOrder = new Order(req.body);
     try {
       const savedOrder = await newOrder.save();
       const response = {
