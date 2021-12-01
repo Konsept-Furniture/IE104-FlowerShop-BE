@@ -18,7 +18,12 @@ const OrderSchema = new mongoose.Schema(
       },
     ],
     amount: { type: Number, require: true },
-    address: { type: Object, require: true },
+    deliveryInfo: {
+      name: { type: String, default: "" },
+      phone: { type: String, default: "" },
+      address: { type: String, default: "" },
+      email: { type: String, default: "" },
+    },
     status: { type: String, default: "pending" },
   },
   { timestamps: true }

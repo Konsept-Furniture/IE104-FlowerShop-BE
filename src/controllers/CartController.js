@@ -19,7 +19,7 @@ class CartController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -40,10 +40,10 @@ class CartController {
         message: "Success",
       };
       return res.json(response);
-    } catch (error) {
+    } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -110,10 +110,10 @@ class CartController {
         message: "Cart has been deleted...",
       };
       return res.json(response);
-    } catch (error) {
+    } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -146,10 +146,10 @@ class CartController {
         message: "Delete Item Successfull",
       };
       return res.json(response);
-    } catch (error) {
+    } catch (err) {
       const response = {
         errorCode: 500,
-        message: error,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -164,10 +164,10 @@ class CartController {
         message: "Success",
       };
       return res.json(response);
-    } catch (error) {
+    } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -181,10 +181,10 @@ class CartController {
         message: "Success",
       };
       return res.json(response);
-    } catch (error) {
+    } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }

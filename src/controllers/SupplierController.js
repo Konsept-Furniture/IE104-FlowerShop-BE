@@ -15,7 +15,7 @@ class SupplierController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -39,7 +39,7 @@ class SupplierController {
     } catch (error) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -56,7 +56,7 @@ class SupplierController {
     } catch (error) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -73,7 +73,7 @@ class SupplierController {
     } catch (error) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -90,7 +90,7 @@ class SupplierController {
     } catch (error) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }

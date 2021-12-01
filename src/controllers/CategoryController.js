@@ -15,7 +15,7 @@ class CategoryController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -36,10 +36,10 @@ class CategoryController {
         message: "Success",
       };
       return res.json(response);
-    } catch (error) {
+    } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -53,10 +53,10 @@ class CategoryController {
         message: "Category has been deleted...",
       };
       return res.json(response);
-    } catch (error) {
+    } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -70,10 +70,10 @@ class CategoryController {
         message: "Success",
       };
       return res.json(response);
-    } catch (error) {
+    } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -87,10 +87,10 @@ class CategoryController {
         message: "Success",
       };
       return res.json(response);
-    } catch (error) {
+    } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }

@@ -15,7 +15,7 @@ class PurchaseOrderController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -38,7 +38,7 @@ class PurchaseOrderController {
     } catch (error) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -55,7 +55,7 @@ class PurchaseOrderController {
     } catch (error) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -72,7 +72,7 @@ class PurchaseOrderController {
     } catch (error) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -89,7 +89,7 @@ class PurchaseOrderController {
     } catch (error) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }

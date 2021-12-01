@@ -2,7 +2,11 @@ const Order = require("../model/order");
 
 class OrderController {
   createOrder = async (req, res) => {
-    const newOrder = new Order(req.body);
+    req.body = {
+      ...req.body,
+      userId: req.user.id,
+    };
+    const newOrder = new Order(req.body.da);
     try {
       const savedOrder = await newOrder.save();
       const response = {
@@ -14,14 +18,13 @@ class OrderController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
   };
 
   updateOrder = async (req, res) => {
-    // console.log("Check>>here", req.params.id);
     try {
       const updatedOrder = await Order.findByIdAndUpdate(
         req.params.id,
@@ -39,7 +42,7 @@ class OrderController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -56,7 +59,7 @@ class OrderController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -64,7 +67,6 @@ class OrderController {
 
   deleteOrder = async (req, res) => {
     try {
-      // console.log(req.params.id);
       await Order.delete({ _id: req.params.id });
       const response = {
         errorCode: 0,
@@ -74,7 +76,7 @@ class OrderController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -91,7 +93,7 @@ class OrderController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -114,7 +116,7 @@ class OrderController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -133,7 +135,7 @@ class OrderController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -168,7 +170,7 @@ class OrderController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }

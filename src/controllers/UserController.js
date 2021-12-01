@@ -30,10 +30,10 @@ class UserController {
         message: "Success",
       };
       return res.json(response);
-    } catch (error) {
+    } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -67,10 +67,10 @@ class UserController {
         message: "Success",
       };
       return res.json(response);
-    } catch (error) {
+    } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -84,10 +84,10 @@ class UserController {
         message: "Resore successfully",
       };
       return res.json(response);
-    } catch (error) {
+    } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -108,10 +108,10 @@ class UserController {
         message: "Not found user...",
       };
       return res.json(response);
-    } catch (error) {
+    } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -126,10 +126,10 @@ class UserController {
         message: "User has been deleted...",
       };
       return res.json(response);
-    } catch (error) {
+    } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -151,10 +151,10 @@ class UserController {
         message: "Success",
       };
       return res.json(response);
-    } catch (error) {
+    } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -176,10 +176,10 @@ class UserController {
         message: "Success",
       };
       return res.json(response);
-    } catch (error) {
+    } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -195,10 +195,10 @@ class UserController {
         message: "Success",
       };
       return res.json(response);
-    } catch (error) {
+    } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
@@ -227,10 +227,10 @@ class UserController {
         message: "Success",
       };
       return res.json(response);
-    } catch (error) {
+    } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: JSON.stringify(err),
       };
       return res.json(response);
     }
