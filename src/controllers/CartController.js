@@ -1,4 +1,5 @@
 const Cart = require("../model/cart");
+const Product = require("../model/product");
 
 class CartController {
   createCart = async (req, res) => {
@@ -158,11 +159,42 @@ class CartController {
     // console.log(">>Check get cart", req.params.userId);
     try {
       const cart = await Cart.findOne({ userId: req.user.id });
+
+      let arrayFilterProduct = [];
+      let arrayProduct = [];
+      let arrayID = [];
+      let quantity = [];
+      cart.products.forEach((item) => {
+        arrayID.push(item.productId);
+        quantity.push(item.quantity);
+      });
+
+      const Products = await Product.find();
+      // Products.forEach((item) => console.log(item._id.toString()));
+      arrayFilterProduct = Products.filter((item) =>
+        arrayID.includes(item._id.toString())
+      );
+
+      for (let i = 0; i < arrayID.length; i++) {
+        arrayFilterProduct.forEach((item) => {
+          if (item._id.toString() === arrayID[i]) {
+            const newProduct = {
+              ...item._doc,
+              quantity: quantity[i],
+            };
+            arrayProduct.push(newProduct);
+          }
+        });
+      }
+
       const response = {
-        data: cart,
+        data: { ...cart._doc, products: arrayProduct },
         errorCode: 0,
         message: "Success",
       };
+
+      // console.log(response.data);
+
       return res.json(response);
     } catch (err) {
       const response = {

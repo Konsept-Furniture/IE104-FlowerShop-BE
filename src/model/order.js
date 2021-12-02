@@ -25,6 +25,7 @@ const OrderSchema = new mongoose.Schema(
       email: { type: String, default: "" },
     },
     status: { type: String, default: "pending" },
+    notes: { type: String, default: "" },
   },
   { timestamps: true }
 );
