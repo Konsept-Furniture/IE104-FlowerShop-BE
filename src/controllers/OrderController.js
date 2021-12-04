@@ -105,8 +105,9 @@ class OrderController {
     // console.log("Check deleted ", qDeleted);
     try {
       const orders = qDeleted
-        ? await Order.findDeleted({ userId: req.params.userId })
-        : await Order.find({ userId: req.params.userId });
+        ? await Order.findDeleted({ userId: req.user.id })
+        : await Order.find({ userId: req.user.id });
+        
       const response = {
         data: orders,
         errorCode: 0,

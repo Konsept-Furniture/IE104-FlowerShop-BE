@@ -21,7 +21,12 @@ const OrderSchema = new mongoose.Schema(
     deliveryInfo: {
       name: { type: String, default: "" },
       phone: { type: String, default: "" },
-      address: { type: String, default: "" },
+      address: {
+        province: { type: String, default: "" },
+        district: { type: String, default: "" },
+        ward: { type: String, default: "" },
+        street: { type: String, default: "" },
+      },
       email: { type: String, default: "" },
     },
     status: { type: String, default: "pending" },
