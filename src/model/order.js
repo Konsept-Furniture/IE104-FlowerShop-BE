@@ -29,6 +29,12 @@ const OrderSchema = new mongoose.Schema(
       },
       email: { type: String, default: "" },
     },
+    isPaid: { type: Boolean, default: false },
+    payment: {
+      type: String,
+      enum: ["COD", "PayPal"],
+      default: "COD",
+    },
     status: { type: String, default: "pending" },
     notes: { type: String, default: "" },
   },
