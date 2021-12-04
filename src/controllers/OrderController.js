@@ -1,14 +1,28 @@
 const Order = require("../model/order");
+const Cart = require("../model/cart");
 
 class OrderController {
   createOrder = async (req, res) => {
-    req.body = {
-      ...req.body,
-      userId: req.user.id,
-    };
-    const newOrder = new Order(req.body);
     try {
+      req.body = {
+        ...req.body,
+        userId: req.user.id,
+      };
+      const newOrder = new Order(req.body);
       const savedOrder = await newOrder.save();
+
+      let products = req.body.products;
+      const cart = await Cart.findOne({ userId: req.user.id });
+      for (let i = 0; i < products.length; i++) {
+        let item = { productId: products[i].productId };
+        const updatedCart = await Cart.findByIdAndUpdate(
+          cart._id.toString(),
+          { $pull: { products: item } },
+          { new: true }
+        );
+        console.log(updatedCart);
+      }
+
       const response = {
         data: savedOrder,
         errorCode: 0,
@@ -18,7 +32,7 @@ class OrderController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -42,7 +56,7 @@ class OrderController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -59,7 +73,7 @@ class OrderController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -76,7 +90,7 @@ class OrderController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -93,7 +107,7 @@ class OrderController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -107,7 +121,7 @@ class OrderController {
       const orders = qDeleted
         ? await Order.findDeleted({ userId: req.user.id })
         : await Order.find({ userId: req.user.id });
-        
+
       const response = {
         data: orders,
         errorCode: 0,
@@ -117,7 +131,26 @@ class OrderController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
+      };
+      return res.json(response);
+    }
+  };
+
+  readOrderDetail = async (req, res) => {
+    try {
+      const order = await Order.findById(req.params.id);
+
+      const response = {
+        data: order,
+        errorCode: 0,
+        message: "Success",
+      };
+      return res.json(response);
+    } catch (err) {
+      const response = {
+        errorCode: 500,
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -136,7 +169,7 @@ class OrderController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -171,7 +204,7 @@ class OrderController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }

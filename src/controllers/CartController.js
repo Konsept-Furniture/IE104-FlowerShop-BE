@@ -141,6 +141,7 @@ class CartController {
         { $pull: { products: item } },
         { new: true }
       );
+      
       const response = {
         data: updatedCart,
         errorCode: 0,
