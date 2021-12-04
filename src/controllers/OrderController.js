@@ -1,5 +1,6 @@
 const Order = require("../model/order");
 const Cart = require("../model/cart");
+const Product = require("../model/product");
 
 class OrderController {
   createOrder = async (req, res) => {
@@ -141,8 +142,39 @@ class OrderController {
     try {
       const order = await Order.findById(req.params.id);
 
+      let arrayFilterProduct = [];
+      let arrayProduct = [];
+      let arrayID = [];
+      let orthers = [];
+      order.products.forEach((item) => {
+        arrayID.push(item.productId);
+        orthers.push({
+          quantity: item.quantity || 0,
+          amount: item.quantity || 0,
+        });
+      });
+
+      const Products = await Product.find();
+      arrayFilterProduct = Products.filter((item) =>
+        arrayID.includes(item._id.toString())
+      );
+
+      for (let i = 0; i < arrayID.length; i++) {
+        arrayFilterProduct.forEach((item) => {
+          if (item._id.toString() === arrayID[i]) {
+            const newProduct = {
+              ...orthers[i],
+              productId: arrayID[i],
+              img: item._doc.img,
+              title: item._doc.title,
+            };
+            arrayProduct.push(newProduct);
+          }
+        });
+      }
+
       const response = {
-        data: order,
+        data: { ...order._doc, products: arrayProduct },
         errorCode: 0,
         message: "Success",
       };
