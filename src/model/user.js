@@ -8,7 +8,12 @@ const UserSchema = new mongoose.Schema(
     password: { type: String, required: true },
     isAdmin: { type: Boolean, default: false },
     phone: { type: String, default: "" },
-    address: { type: String, default: "" },
+    address: {
+      province: { type: String, default: "" },
+      district: { type: String, default: "" },
+      ward: { type: String, default: "" },
+      street: { type: String, default: "" },
+    },
     name: { type: String, default: "" },
   },
   { timestamps: true }
