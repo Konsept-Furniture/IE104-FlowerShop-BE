@@ -35,7 +35,7 @@ const OrderSchema = new mongoose.Schema(
       enum: ["COD", "PayPal"],
       default: "COD",
     },
-    status: { type: String, default: "pending" },
+    status: { type: String, default: "PENDING" },
     notes: { type: String, default: "" },
   },
   { timestamps: true }
