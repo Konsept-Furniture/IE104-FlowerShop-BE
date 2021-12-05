@@ -115,8 +115,12 @@ class OrderController {
     // console.log("Check deleted ", qDeleted);
     try {
       const orders = qDeleted
-        ? await Order.findDeleted({ userId: req.user.id })
-        : await Order.find({ userId: req.user.id });
+        ? await Order.findDeleted({ userId: req.user.id }).sort({
+            createdAt: "desc",
+          })
+        : await Order.find({ userId: req.user.id }).sort({
+            createdAt: "desc",
+          });
 
       const response = {
         data: orders,
