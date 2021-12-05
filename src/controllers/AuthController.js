@@ -17,15 +17,15 @@ class AuthControler {
         };
         return res.json(response);
       }
+
       const newUser = new User({
-        username: req.body.username,
-        email: req.body.email,
+        ...req.body,
         password: CryptoJS.AES.encrypt(
           req.body.password,
           process.env.PASS_SECRET
         ).toString(),
-        isAdmin: req.body.isAdmin,
       });
+
       const savedUser = await newUser.save();
       const { password, ...orthers } = savedUser._doc;
       const content = {

@@ -161,7 +161,7 @@ class OrderController {
               productId: arrayID[i],
               img: item._doc.img,
               title: item._doc.title,
-              price: item._doc.title,
+              price: item._doc.price,
             };
             arrayProduct.push(newProduct);
           }
