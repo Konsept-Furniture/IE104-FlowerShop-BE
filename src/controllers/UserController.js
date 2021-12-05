@@ -33,7 +33,7 @@ class UserController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -70,12 +70,11 @@ class UserController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
   };
-
   restoreUser = async (req, res) => {
     try {
       await User.restore({ _id: req.params.id });
@@ -87,7 +86,7 @@ class UserController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -111,12 +110,11 @@ class UserController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
   };
-
   destroyUser = async (req, res) => {
     console.log("Come here");
     try {
@@ -129,7 +127,7 @@ class UserController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -154,7 +152,7 @@ class UserController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -179,7 +177,7 @@ class UserController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -198,7 +196,7 @@ class UserController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -230,7 +228,7 @@ class UserController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }

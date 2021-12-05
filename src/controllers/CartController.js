@@ -20,7 +20,7 @@ class CartController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -44,7 +44,7 @@ class CartController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -114,7 +114,7 @@ class CartController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -151,7 +151,7 @@ class CartController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -200,7 +200,7 @@ class CartController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -217,7 +217,7 @@ class CartController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }

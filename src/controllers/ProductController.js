@@ -15,7 +15,7 @@ class ProductController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -38,7 +38,7 @@ class ProductController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -54,7 +54,7 @@ class ProductController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -71,7 +71,7 @@ class ProductController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -87,12 +87,11 @@ class ProductController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
   };
-
   readProduct = async (req, res) => {
     try {
       const product = await Product.findOne({ _id: req.params.id });
@@ -105,12 +104,11 @@ class ProductController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
   };
-
   readAllProductCategory = async (req, res) => {
     try {
       let data;
@@ -174,12 +172,11 @@ class ProductController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
   };
-
   readAllProduct = async (req, res) => {
     try {
       let data;
@@ -203,7 +200,7 @@ class ProductController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }

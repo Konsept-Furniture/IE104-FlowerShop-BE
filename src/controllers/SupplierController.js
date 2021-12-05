@@ -15,7 +15,7 @@ class SupplierController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -39,7 +39,7 @@ class SupplierController {
     } catch (error) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -56,7 +56,7 @@ class SupplierController {
     } catch (error) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -73,7 +73,7 @@ class SupplierController {
     } catch (error) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -90,7 +90,7 @@ class SupplierController {
     } catch (error) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }

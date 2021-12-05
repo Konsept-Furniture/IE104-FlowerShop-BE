@@ -38,7 +38,6 @@ class OrderController {
       return res.json(response);
     }
   };
-
   updateOrder = async (req, res) => {
     try {
       const updatedOrder = await Order.findByIdAndUpdate(
@@ -62,7 +61,6 @@ class OrderController {
       return res.json(response);
     }
   };
-
   restoreOrder = async (req, res) => {
     try {
       await Order.restore({ _id: req.params.id });
@@ -79,7 +77,6 @@ class OrderController {
       return res.json(response);
     }
   };
-
   deleteOrder = async (req, res) => {
     try {
       await Order.delete({ _id: req.params.id });
@@ -96,7 +93,6 @@ class OrderController {
       return res.json(response);
     }
   };
-
   destroyOrder = async (req, res) => {
     try {
       await Order.deleteOne({ _id: req.params.id });
@@ -113,7 +109,6 @@ class OrderController {
       return res.json(response);
     }
   };
-
   readUserOrders = async (req, res) => {
     // console.log(">>Check get order", req.params.userId);
     let qDeleted = req.query.deleted;
@@ -137,7 +132,6 @@ class OrderController {
       return res.json(response);
     }
   };
-
   readOrderDetail = async (req, res) => {
     try {
       const order = await Order.findById(req.params.id);
@@ -167,6 +161,7 @@ class OrderController {
               productId: arrayID[i],
               img: item._doc.img,
               title: item._doc.title,
+              price: item._doc.title,
             };
             arrayProduct.push(newProduct);
           }
@@ -187,7 +182,6 @@ class OrderController {
       return res.json(response);
     }
   };
-
   readAllOrders = async (req, res) => {
     let qDeleted = req.query.deleted;
     try {
@@ -206,7 +200,6 @@ class OrderController {
       return res.json(response);
     }
   };
-
   readMonthlyIncome = async (req, res) => {
     const date = new Date();
     const lastMonth = new Date(date.setMonth(date.getMonth() - 1));

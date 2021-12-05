@@ -43,12 +43,11 @@ class AuthControler {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
   };
-
   login = async (req, res) => {
     try {
       const user = await User.findOne({ username: req.body.username });
@@ -101,12 +100,11 @@ class AuthControler {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: JSON.stringify(err),
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
   };
-
   checkToken = async (req, res) => {
     return res.json({
       errorCode: 0,
