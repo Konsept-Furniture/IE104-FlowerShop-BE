@@ -15,8 +15,10 @@ const UserSchema = new mongoose.Schema(
         ward: { type: String, default: "" },
         street: { type: String, default: "" },
       },
+      email: { type: String, default: "" },
     },
     email: { type: String, default: "" },
+    name: { type: String, default: "" },
   },
   { timestamps: true }
 );

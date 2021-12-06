@@ -59,15 +59,17 @@ class AuthControler {
         return res.json(response);
       }
 
+      console.log(user);
+
       const hashedPassword = CryptoJS.AES.decrypt(
         user.password,
         process.env.PASS_SECRET
       );
       const originalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
-      // console.log(">>Check pass", originalPassword);
+      console.log(">>Check pass", originalPassword);
 
       const inputPassword = req.body.password;
-      // console.log(">>Check inputpass", inputPassword);
+      console.log(">>Check inputpass", inputPassword);
 
       if (originalPassword != inputPassword) {
         const response = {
@@ -130,10 +132,42 @@ class AuthControler {
         return res.json(response);
       }
 
+      if (!newPassword && !confirmPassword) {
+        if (originalPassword != oldPassword) {
+          const response = {
+            errorCode: 401,
+            message: "Wrong Password",
+          };
+          return res.json(response);
+        } else {
+          const response = {
+            errorCode: 200,
+            message: "Success",
+          };
+          return res.json(response);
+        }
+      }
+
+      if (originalPassword != oldPassword) {
+        const response = {
+          errorCode: 400,
+          message: "Wrong Password",
+        };
+        return res.json(response);
+      }
+
       if (newPassword !== confirmPassword) {
         const response = {
-          errorCode: 200,
+          errorCode: 400,
           message: "Both new passwords are not matching",
+        };
+        return res.json(response);
+      }
+
+      if (newPassword === originalPassword) {
+        const response = {
+          errorCode: 400,
+          message: "The new password must not be the same as the old password",
         };
         return res.json(response);
       }
@@ -163,6 +197,14 @@ class AuthControler {
       };
       return res.json(response);
     }
+  };
+
+  logout = async (req, res) => {
+    const response = {
+      errorCode: 0,
+      message: "Logout successful",
+    };
+    return res.json(response);
   };
 }
 
