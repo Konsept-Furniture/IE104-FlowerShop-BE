@@ -27,7 +27,7 @@ const OrderSchema = new mongoose.Schema(
         ward: { type: String, default: "" },
         street: { type: String, default: "" },
       },
-      email: { type: String, default: "" },
+      email: { type: String, default: "" }, 
     },
     isPaid: { type: Boolean, default: false },
     payment: {

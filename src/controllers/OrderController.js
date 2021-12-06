@@ -140,6 +140,14 @@ class OrderController {
     try {
       const order = await Order.findById(req.params.id);
 
+      if (order.userId !== req.user.id) {
+        const response = {
+          errorCode: 403,
+          message: `You are not allowed to work with order with ID(${req.params.id})`,
+        };
+        return res.json(response);
+      }
+
       let arrayFilterProduct = [];
       let arrayProduct = [];
       let arrayID = [];
