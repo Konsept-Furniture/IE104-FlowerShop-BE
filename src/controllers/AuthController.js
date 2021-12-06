@@ -111,6 +111,59 @@ class AuthControler {
       message: "Success",
     });
   };
+  changePassword = async (req, res) => {
+    try {
+      const user = await User.findOneWithDeleted({ _id: req.user.id });
+      const { oldPassword, newPassword, confirmPassword } = req.body;
+
+      const hashedPassword = CryptoJS.AES.decrypt(
+        user.password,
+        process.env.PASS_SECRET
+      );
+      const originalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
+
+      if (originalPassword != oldPassword) {
+        const response = {
+          errorCode: 401,
+          message: "Wrong Password",
+        };
+        return res.json(response);
+      }
+
+      if (newPassword !== confirmPassword) {
+        const response = {
+          errorCode: 200,
+          message: "Both new passwords are not matching",
+        };
+        return res.json(response);
+      }
+
+      let passwordCry = CryptoJS.AES.encrypt(
+        newPassword,
+        process.env.PASS_SECRET
+      ).toString();
+
+      const updatedUser = await User.findByIdAndUpdate(
+        req.user.id,
+        {
+          $set: { password: passwordCry },
+        },
+        { new: true }
+      );
+      const response = {
+        data: updatedUser,
+        errorCode: 0,
+        message: "Success",
+      };
+      return res.json(response);
+    } catch (error) {
+      const response = {
+        errorCode: 500,
+        message: "Something went wrong, please try again",
+      };
+      return res.json(response);
+    }
+  };
 }
 
 module.exports = new AuthControler();

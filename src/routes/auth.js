@@ -8,6 +8,9 @@ router.post("/register", AuthController.register);
 //LOGIN
 router.post("/login", AuthController.login);
 
+//CHANGE PASSWORD
+router.put("/change-password", verifyToken, AuthController.changePassword);
+
 //CHECK TOKEN
 router.post("/check-token", verifyToken, AuthController.checkToken);
 

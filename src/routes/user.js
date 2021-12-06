@@ -19,6 +19,7 @@ router.put(
 //UPDATE USER PERSONAL
 router.put("/update/infor", verifyToken, UserController.updateUserInformation);
 
+
 //RESTORE USER
 router.patch(
   "/:id",

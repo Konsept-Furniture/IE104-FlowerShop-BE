@@ -1,4 +1,5 @@
 const User = require("../model/user");
+const CryptoJS = require("crypto-js");
 
 class UserController {
   updateUser = async (req, res) => {
