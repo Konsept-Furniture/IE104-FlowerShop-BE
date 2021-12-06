@@ -141,7 +141,7 @@ class AuthControler {
           return res.json(response);
         } else {
           const response = {
-            errorCode: 200,
+            errorCode: 0,
             message: "Success",
           };
           return res.json(response);
