@@ -70,7 +70,7 @@ class CartController {
       const filterProducts = oldProducts.filter(
         (product) => product.productId !== productId
       );
-      console.log("here");
+
       let products = filterProducts.map((item) => {
         const p = {
           productId: item.productId,
@@ -78,9 +78,30 @@ class CartController {
         };
         return p;
       });
-      products.unshift(item);
 
-      //Update
+      let duplicate = [];
+      duplicate = oldProducts.filter(
+        (product) => product.productId === productId
+      );
+
+      if (duplicate.length > 0) {
+        products = [
+          ...products,
+          {
+            productId: duplicate[0].productId,
+            quantity: Number(duplicate[0].quantity) + Number(quantity),
+          },
+        ];
+      } else {
+        products = [
+          ...products,
+          {
+            productId: productId,
+            quantity: quantity,
+          },
+        ];
+      }
+
       const updatedCart = await Cart.findByIdAndUpdate(
         req.params.id,
         {
@@ -141,7 +162,7 @@ class CartController {
         { $pull: { products: item } },
         { new: true }
       );
-      
+
       const response = {
         data: updatedCart,
         errorCode: 0,
