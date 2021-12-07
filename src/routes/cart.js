@@ -13,7 +13,7 @@ router.post("/", verifyToken, CartController.createCart);
 router.put("/add-item/:id", verifyToken, CartController.addItemToCart);
 
 //UPDATE CART - OK
-router.put("/:id", verifyObjectId, verifyToken, CartController.updateCart);
+router.put("/:id", verifyToken, CartController.updateCart);
 
 //DELETE CART ITEM
 router.delete("/delete/:id", verifyToken, CartController.deleteCartItem);
