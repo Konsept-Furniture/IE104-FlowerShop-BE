@@ -10,7 +10,7 @@ const OrderController = require("../controllers/OrderController");
 router.post("/", verifyToken, OrderController.createOrder);
 
 //UPDATE ORDER - OK
-router.put("/:id", verifyTokenAndAdmin, OrderController.updateOrder);
+router.put("/:id", verifyToken, OrderController.updateOrder);
 
 //DELETE ORDER
 router.delete("/:id", verifyToken, OrderController.deleteOrder);
