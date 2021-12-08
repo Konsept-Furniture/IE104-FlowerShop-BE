@@ -200,14 +200,24 @@ class OrderController {
     // let qDeleted = req.query.deleted;
 
     try {
-      const { page, pageSize } = req.query;
+      const { page, pageSize, orderBy } = req.query;
       const { limit, offset } = getPagination(page, pageSize);
-      console.log(limit, offset);
+
+      let filter = {};
+      if (orderBy) {
+        let arraySort = orderBy.split("-");
+        filter = {
+          [arraySort[0]]: arraySort[1],
+        };
+      }
+
+      console.log(filter);
       let data = await Order.paginate(
         {},
         {
           offset,
           limit,
+          sort: filter,
         }
       );
 
@@ -218,7 +228,6 @@ class OrderController {
       const results = orders.map((item) => {
         // console.log(item.userId);
         let user = users.filter((u) => u._id.toString() === item.userId);
-        console.log(item._doc);
         return { ...item._doc, user: user[0] };
       });
 
