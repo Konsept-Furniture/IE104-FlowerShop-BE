@@ -66,7 +66,6 @@ class ProductController {
     }
   };
   deleteProduct = async (req, res) => {
-    console.log("Come here");
     try {
       await Product.findByIdAndUpdate(req.params.id, {
         $set: { deleted: true, deletedAt: Date.now() },

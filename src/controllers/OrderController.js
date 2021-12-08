@@ -65,7 +65,10 @@ class OrderController {
   };
   restoreOrder = async (req, res) => {
     try {
-      await Order.restore({ _id: req.params.id });
+      await Order.findByIdAndUpdate(req.params.id, {
+        $set: { deleted: false, deletedAt: null },
+      });
+
       const response = {
         errorCode: 0,
         message: "Resore successfully",
@@ -81,7 +84,9 @@ class OrderController {
   };
   deleteOrder = async (req, res) => {
     try {
-      await Order.delete({ _id: req.params.id });
+      await Order.findByIdAndUpdate(req.params.id, {
+        $set: { deleted: true, deletedAt: Date.now() },
+      });
       const response = {
         errorCode: 0,
         message: "The order has been put in the trash...",
@@ -97,7 +102,7 @@ class OrderController {
   };
   destroyOrder = async (req, res) => {
     try {
-      await Order.deleteOne({ _id: req.params.id });
+      await Order.findByIdAndDelete(req.params.id);
       const response = {
         errorCode: 0,
         message: "Order has been deleted...",
@@ -112,17 +117,16 @@ class OrderController {
     }
   };
   readUserOrders = async (req, res) => {
-    // console.log(">>Check get order", req.params.userId);
-    let qDeleted = req.query.deleted;
+    console.log(">>Check get order");
+    // let qDeleted = req.query.deleted;
     // console.log("Check deleted ", qDeleted);
     try {
-      const orders = qDeleted
-        ? await Order.findDeleted({ userId: req.user.id }).sort({
-            createdAt: "desc",
-          })
-        : await Order.find({ userId: req.user.id }).sort({
-            createdAt: "desc",
-          });
+      const orders = await Order.find({
+        userId: req.user.id,
+        deleted: false,
+      }).sort({
+        createdAt: "desc",
+      });
 
       const response = {
         data: orders,

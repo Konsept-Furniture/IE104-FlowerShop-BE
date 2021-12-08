@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const mongooseDelete = require("mongoose-delete");
 const mongoosePaginate = require("mongoose-paginate-v2");
 
 const OrderSchema = new mongoose.Schema(
@@ -38,14 +37,11 @@ const OrderSchema = new mongoose.Schema(
     },
     status: { type: String, default: "PENDING" },
     notes: { type: String, default: "" },
+    deleted: { type: Boolean, default: false },
+    deletedAt: { type: Date, default: null },
   },
   { timestamps: true }
 );
-
-OrderSchema.plugin(mongooseDelete, {
-  deletedAt: true,
-  overrideMethods: "all",
-});
 
 OrderSchema.plugin(mongoosePaginate);
 
