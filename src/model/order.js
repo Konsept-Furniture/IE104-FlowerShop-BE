@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const mongooseDelete = require("mongoose-delete");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 const OrderSchema = new mongoose.Schema(
   {
@@ -27,7 +28,7 @@ const OrderSchema = new mongoose.Schema(
         ward: { type: String, default: "" },
         street: { type: String, default: "" },
       },
-      email: { type: String, default: "" }, 
+      email: { type: String, default: "" },
     },
     isPaid: { type: Boolean, default: false },
     payment: {
@@ -45,5 +46,7 @@ OrderSchema.plugin(mongooseDelete, {
   deletedAt: true,
   overrideMethods: "all",
 });
+
+OrderSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model("Order", OrderSchema);

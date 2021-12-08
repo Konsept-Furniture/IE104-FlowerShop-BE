@@ -146,8 +146,6 @@ class ProductController {
       };
       condition = search ? { ...condition, ...qSearch } : condition;
 
-      console.log(condition);
-
       if (orderBy) {
         let arraySort = orderBy.split("-");
         filter = {

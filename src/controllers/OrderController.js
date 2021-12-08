@@ -1,6 +1,7 @@
 const Order = require("../model/order");
 const Cart = require("../model/cart");
 const Product = require("../model/product");
+const getPagination = require("../helper/getPagination");
 
 class OrderController {
   createOrder = async (req, res) => {
@@ -195,11 +196,31 @@ class OrderController {
     }
   };
   readAllOrders = async (req, res) => {
-    let qDeleted = req.query.deleted;
+    // let qDeleted = req.query.deleted;
+
     try {
-      const orders = qDeleted ? await Order.findDeleted() : await Order.find();
+      const { page, pageSize } = req.query;
+      const { limit, offset } = getPagination(page, pageSize);
+      console.log(limit, offset);
+      let data = await Order.paginate(
+        {},
+        {
+          offset,
+          limit,
+        }
+      );
+
+      let orders = data.docs;
+
+      let pagination = {
+        totalItems: data.totalDocs,
+        totalPages: data.totalPages,
+        currentPage: data.page,
+        pageSize: +pageSize || 3,
+      };
       const response = {
         data: orders,
+        pagination: pagination,
         errorCode: 0,
         message: "Success",
       };
