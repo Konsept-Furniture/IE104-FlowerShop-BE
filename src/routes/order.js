@@ -22,7 +22,7 @@ router.delete("/destroy/:id", verifyToken, OrderController.destroyOrder);
 router.patch("/:id", verifyToken, OrderController.restoreOrder);
 
 //GET USER ORDERS
-router.get("/", verifyToken, OrderController.readUserOrders);
+router.get("/user-orders", verifyToken, OrderController.readUserOrders);
 
 //GET ORDER DETAIL
 router.get("/:id", verifyToken, OrderController.readOrderDetail);
