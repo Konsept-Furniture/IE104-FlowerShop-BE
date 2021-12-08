@@ -1,4 +1,5 @@
 const Order = require("../model/order");
+const User = require("../model/user");
 const Cart = require("../model/cart");
 const Product = require("../model/product");
 const getPagination = require("../helper/getPagination");
@@ -212,14 +213,26 @@ class OrderController {
 
       let orders = data.docs;
 
+      const users = await User.find();
+      // console.log(users);
+      const results = orders.map((item) => {
+        // console.log(item.userId);
+        let user = users.filter((u) => u._id.toString() === item.userId);
+        console.log(item._doc);
+        return { ...item._doc, user: user[0] };
+      });
+
       let pagination = {
         totalItems: data.totalDocs,
         totalPages: data.totalPages,
         currentPage: data.page,
         pageSize: +pageSize || 3,
       };
+
+      // results.map((e) => console.log(e));
+
       const response = {
-        data: orders,
+        data: results,
         pagination: pagination,
         errorCode: 0,
         message: "Success",
