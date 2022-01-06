@@ -28,11 +28,7 @@ router.get("/user-orders", verifyToken, OrderController.readUserOrders);
 router.get("/:id", verifyToken, OrderController.readOrderDetail);
 
 //GET MONTHLY INCOME
-router.get(
-  "/stats/income",
-  verifyTokenAndAdmin,
-  OrderController.readMonthlyIncome
-);
+router.get("/stats/income", verifyTokenAndAdmin, OrderController.readIncome);
 
 //GET ALL ORDERS
 router.get("/", verifyTokenAndAdmin, OrderController.readAllOrders);

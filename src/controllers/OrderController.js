@@ -3,6 +3,8 @@ const User = require("../model/user");
 const Cart = require("../model/cart");
 const Product = require("../model/product");
 const getPagination = require("../helper/getPagination");
+const { arrayMonthChar, arrayMonthNumber } = require("../helper/date");
+const { formatDataMonth } = require("../helper/convertData");
 
 class OrderController {
   createOrder = async (req, res) => {
@@ -264,13 +266,24 @@ class OrderController {
       return res.json(response);
     }
   };
-  readMonthlyIncome = async (req, res) => {
-    const date = new Date();
-    const lastMonth = new Date(date.setMonth(date.getMonth() - 1));
-    const previousMonth = new Date(date.setMonth(lastMonth.getMonth() - 2));
+  readIncome = async (req, res) => {
+    const currentDate = new Date().toLocaleString("en-US", {
+      timeZone: "Asia/Bangkok",
+    });
+    //Day Month Year
+    const splitDate = currentDate.split(",");
+    const arrayDate = splitDate[0].split("/");
+    arrayDate[0] =
+      arrayDate[0].length === 2 ? arrayDate[0] : "0" + arrayDate[0];
+    arrayDate[1] =
+      arrayDate[1].length === 2 ? arrayDate[1] : "0" + arrayDate[1];
+    const date = new Date(`${arrayDate[2]}-${arrayDate[1]}-${arrayDate[0]}`);
+    const january = new Date(date.setMonth(0));
+    const januaryLastYear = new Date(date.setMonth(-12));
+
     try {
-      const income = await Order.aggregateWithDeleted([
-        { $match: { createdAt: { $gte: previousMonth } } },
+      const incomeThisYear = await Order.aggregate([
+        { $match: { createdAt: { $gte: january } } },
         {
           $project: {
             month: { $month: "$createdAt" },
@@ -284,8 +297,44 @@ class OrderController {
           },
         },
       ]);
+      const incomeLastYear = await Order.aggregate([
+        {
+          $match: {
+            createdAt: { $gte: januaryLastYear, $lte: january },
+          },
+        },
+        {
+          $project: {
+            month: { $month: "$createdAt" },
+            sales: "$amount",
+          },
+        },
+        {
+          $group: {
+            _id: "$month",
+            total: { $sum: "$sales" },
+          },
+        },
+      ]);
+
+      const dataThisYear = formatDataMonth(arrayDate[0], incomeThisYear);
+      const dataLastYear = formatDataMonth(arrayDate[0], incomeLastYear);
       const response = {
-        data: income,
+        data: {
+          datasets: [
+            {
+              ordinal: 1,
+              data: dataThisYear.data,
+              label: "This year",
+            },
+            {
+              ordinal: 2,
+              data: dataLastYear.data,
+              label: "Last year",
+            },
+          ],
+          labels: dataLastYear.labels,
+        },
         errorCode: 0,
         message: "Success",
       };
@@ -297,10 +346,6 @@ class OrderController {
       };
       return res.json(response);
     }
-  };
-
-  readIncome = async (req, res) => {
-    console.log("Fuck you");
   };
 }
 
