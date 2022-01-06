@@ -1,4 +1,5 @@
 const User = require("../model/user");
+const CryptoJS = require("crypto-js");
 
 class UserController {
   updateUser = async (req, res) => {
@@ -30,10 +31,10 @@ class UserController {
         message: "Update user successfully",
       };
       return res.json(response);
-    } catch (error) {
+    } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -67,15 +68,14 @@ class UserController {
         message: "Updated information successfully",
       };
       return res.json(response);
-    } catch (error) {
+    } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
   };
-
   restoreUser = async (req, res) => {
     try {
       await User.restore({ _id: req.params.id });
@@ -84,10 +84,10 @@ class UserController {
         message: "Resore successfully",
       };
       return res.json(response);
-    } catch (error) {
+    } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -108,15 +108,14 @@ class UserController {
         message: "Not found user...",
       };
       return res.json(response);
-    } catch (error) {
+    } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
   };
-
   destroyUser = async (req, res) => {
     console.log("Come here");
     try {
@@ -126,10 +125,10 @@ class UserController {
         message: "User has been deleted...",
       };
       return res.json(response);
-    } catch (error) {
+    } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -151,10 +150,10 @@ class UserController {
         message: "Success",
       };
       return res.json(response);
-    } catch (error) {
+    } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -176,10 +175,10 @@ class UserController {
         message: "Success",
       };
       return res.json(response);
-    } catch (error) {
+    } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -195,10 +194,10 @@ class UserController {
         message: "Success",
       };
       return res.json(response);
-    } catch (error) {
+    } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
@@ -227,10 +226,10 @@ class UserController {
         message: "Success",
       };
       return res.json(response);
-    } catch (error) {
+    } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }

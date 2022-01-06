@@ -1,10 +1,31 @@
 const Order = require("../model/order");
+const User = require("../model/user");
+const Cart = require("../model/cart");
+const Product = require("../model/product");
+const getPagination = require("../helper/getPagination");
 
 class OrderController {
   createOrder = async (req, res) => {
-    const newOrder = new Order(req.body);
     try {
+      req.body = {
+        ...req.body,
+        userId: req.user.id,
+      };
+      const newOrder = new Order(req.body);
       const savedOrder = await newOrder.save();
+
+      let products = req.body.products;
+      const cart = await Cart.findOne({ userId: req.user.id });
+      for (let i = 0; i < products.length; i++) {
+        let item = { productId: products[i].productId };
+        const updatedCart = await Cart.findByIdAndUpdate(
+          cart._id.toString(),
+          { $pull: { products: item } },
+          { new: true }
+        );
+        console.log(updatedCart);
+      }
+
       const response = {
         data: savedOrder,
         errorCode: 0,
@@ -14,14 +35,12 @@ class OrderController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
   };
-
   updateOrder = async (req, res) => {
-    // console.log("Check>>here", req.params.id);
     try {
       const updatedOrder = await Order.findByIdAndUpdate(
         req.params.id,
@@ -39,15 +58,17 @@ class OrderController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
   };
-
   restoreOrder = async (req, res) => {
     try {
-      await Order.restore({ _id: req.params.id });
+      await Order.findByIdAndUpdate(req.params.id, {
+        $set: { deleted: false, deletedAt: null },
+      });
+
       const response = {
         errorCode: 0,
         message: "Resore successfully",
@@ -56,16 +77,16 @@ class OrderController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
   };
-
   deleteOrder = async (req, res) => {
     try {
-      // console.log(req.params.id);
-      await Order.delete({ _id: req.params.id });
+      await Order.findByIdAndUpdate(req.params.id, {
+        $set: { deleted: true, deletedAt: Date.now() },
+      });
       const response = {
         errorCode: 0,
         message: "The order has been put in the trash...",
@@ -74,15 +95,14 @@ class OrderController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
   };
-
   destroyOrder = async (req, res) => {
     try {
-      await Order.deleteOne({ _id: req.params.id });
+      await Order.findByIdAndDelete(req.params.id);
       const response = {
         errorCode: 0,
         message: "Order has been deleted...",
@@ -91,20 +111,23 @@ class OrderController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
   };
-
   readUserOrders = async (req, res) => {
-    // console.log(">>Check get order", req.params.userId);
-    let qDeleted = req.query.deleted;
+    console.log(">>Check get order");
+    // let qDeleted = req.query.deleted;
     // console.log("Check deleted ", qDeleted);
     try {
-      const orders = qDeleted
-        ? await Order.findDeleted({ userId: req.params.userId })
-        : await Order.find({ userId: req.params.userId });
+      const orders = await Order.find({
+        userId: req.user.id,
+        deleted: false,
+      }).sort({
+        createdAt: "desc",
+      });
+
       const response = {
         data: orders,
         errorCode: 0,
@@ -114,18 +137,57 @@ class OrderController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
   };
-
-  readAllOrders = async (req, res) => {
-    let qDeleted = req.query.deleted;
+  readOrderDetail = async (req, res) => {
     try {
-      const orders = qDeleted ? await Order.findDeleted() : await Order.find();
+      const order = await Order.findById(req.params.id);
+
+      if (order.userId !== req.user.id) {
+        const response = {
+          errorCode: 403,
+          message: `You are not allowed to work with order with ID(${req.params.id})`,
+        };
+        return res.json(response);
+      }
+
+      let arrayFilterProduct = [];
+      let arrayProduct = [];
+      let arrayID = [];
+      let orthers = [];
+      order.products.forEach((item) => {
+        arrayID.push(item.productId);
+        orthers.push({
+          quantity: item.quantity || 0,
+          amount: item.quantity || 0,
+        });
+      });
+
+      const Products = await Product.find();
+      arrayFilterProduct = Products.filter((item) =>
+        arrayID.includes(item._id.toString())
+      );
+
+      for (let i = 0; i < arrayID.length; i++) {
+        arrayFilterProduct.forEach((item) => {
+          if (item._id.toString() === arrayID[i]) {
+            const newProduct = {
+              ...orthers[i],
+              productId: arrayID[i],
+              img: item._doc.img,
+              title: item._doc.title,
+              price: item._doc.price,
+            };
+            arrayProduct.push(newProduct);
+          }
+        });
+      }
+
       const response = {
-        data: orders,
+        data: { ...order._doc, products: arrayProduct },
         errorCode: 0,
         message: "Success",
       };
@@ -133,12 +195,70 @@ class OrderController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
   };
+  readAllOrders = async (req, res) => {
+    // let qDeleted = req.query.deleted;
 
+    try {
+      const { page, pageSize, orderBy } = req.query;
+      const { limit, offset } = getPagination(page, pageSize);
+
+      let filter = {};
+      if (orderBy) {
+        let arraySort = orderBy.split("-");
+        filter = {
+          [arraySort[0]]: arraySort[1],
+        };
+      }
+
+      console.log(filter);
+      let data = await Order.paginate(
+        {},
+        {
+          offset,
+          limit,
+          sort: filter,
+        }
+      );
+
+      let orders = data.docs;
+
+      const users = await User.find();
+      // console.log(users);
+      const results = orders.map((item) => {
+        // console.log(item.userId);
+        let user = users.filter((u) => u._id.toString() === item.userId);
+        return { ...item._doc, user: user[0] };
+      });
+
+      let pagination = {
+        totalItems: data.totalDocs,
+        totalPages: data.totalPages,
+        currentPage: data.page,
+        pageSize: +pageSize || 3,
+      };
+
+      // results.map((e) => console.log(e));
+
+      const response = {
+        data: results,
+        pagination: pagination,
+        errorCode: 0,
+        message: "Success",
+      };
+      return res.json(response);
+    } catch (err) {
+      const response = {
+        errorCode: 500,
+        message: "Something went wrong, please try again",
+      };
+      return res.json(response);
+    }
+  };
   readMonthlyIncome = async (req, res) => {
     const date = new Date();
     const lastMonth = new Date(date.setMonth(date.getMonth() - 1));
@@ -168,7 +288,7 @@ class OrderController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }

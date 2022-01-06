@@ -1,12 +1,11 @@
 const mongoose = require("mongoose");
-const mongooseDelete = require("mongoose-delete");
 const mongoosePaginate = require("mongoose-paginate-v2");
 
 const randomPopular = Math.floor(Math.random() * 1000);
 
 const ProductSchema = new mongoose.Schema(
   {
-    title: { type: String, required: true, unique: true },
+    title: { type: String, required: true },
     desc: { type: String, required: true },
     img: { type: String, required: true },
     categories: { type: Array },
@@ -18,14 +17,11 @@ const ProductSchema = new mongoose.Schema(
     rating: { type: String, default: "5.0" },
     popular: { type: Number, default: randomPopular },
     inStock: { type: Boolean, default: true },
+    deleted: { type: Boolean, default: false },
+    deletedAt: { type: Date, default: null },
   },
   { timestamps: true }
 );
-
-ProductSchema.plugin(mongooseDelete, {
-  deletedAt: true,
-  overrideMethods: "all",
-});
 
 ProductSchema.plugin(mongoosePaginate);
 

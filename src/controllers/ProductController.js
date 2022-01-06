@@ -5,6 +5,7 @@ class ProductController {
   createProduct = async (req, res) => {
     const newProduct = new Product(req.body);
     try {
+      console.log(newProduct);
       const savedProduct = await newProduct.save();
       const response = {
         data: savedProduct,
@@ -15,20 +16,23 @@ class ProductController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
   };
   updateProduct = async (req, res) => {
     try {
-      const updatedProduct = await Product.findOneAndUpdateWithDeleted(
+      const object = { ...req.body };
+      const updatedProduct = await Product.findByIdAndUpdate(
         req.params.id,
         {
           $set: req.body,
         },
         { new: true }
       );
+
+      console.log(updatedProduct);
       const response = {
         data: updatedProduct,
         errorCode: 0,
@@ -38,14 +42,16 @@ class ProductController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
   };
   restoreProduct = async (req, res) => {
     try {
-      await Product.restore({ _id: req.params.id });
+      await Product.findByIdAndUpdate(req.params.id, {
+        $set: { deleted: false, deletedAt: null },
+      });
       const response = {
         errorCode: 0,
         message: "Restore successfully",
@@ -54,15 +60,16 @@ class ProductController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
   };
   deleteProduct = async (req, res) => {
-    console.log("Come here");
     try {
-      await Product.delete({ _id: req.params.id });
+      await Product.findByIdAndUpdate(req.params.id, {
+        $set: { deleted: true, deletedAt: Date.now() },
+      });
       const response = {
         errorCode: 0,
         message: "The product has been put in the trash...",
@@ -71,14 +78,14 @@ class ProductController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
   };
   destroyProduct = async (req, res) => {
     try {
-      await Product.deleteOne({ _id: req.params.id });
+      await Product.findByIdAndDelete(req.params.id);
       const response = {
         errorCode: 0,
         message: "Product has been deleted...",
@@ -87,15 +94,14 @@ class ProductController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
   };
-
   readProduct = async (req, res) => {
     try {
-      const product = await Product.findOne({ _id: req.params.id });
+      const product = await Product.findById(req.params.id);
       const response = {
         data: product,
         errorCode: 0,
@@ -105,12 +111,11 @@ class ProductController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
   };
-
   readAllProductCategory = async (req, res) => {
     try {
       let data;
@@ -139,8 +144,6 @@ class ProductController {
         },
       };
       condition = search ? { ...condition, ...qSearch } : condition;
-
-      console.log(condition);
 
       if (orderBy) {
         let arraySort = orderBy.split("-");
@@ -174,12 +177,11 @@ class ProductController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
   };
-
   readAllProduct = async (req, res) => {
     try {
       let data;
@@ -203,7 +205,7 @@ class ProductController {
     } catch (err) {
       const response = {
         errorCode: 500,
-        message: err,
+        message: "Something went wrong, please try again",
       };
       return res.json(response);
     }
