@@ -4,8 +4,8 @@
   "description": "Backend for Flower shop website in IE104-UIT",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon src/server.js",
+    "test": "jest --detectOpenHandles"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,10 @@
     "mongoose-paginate-v2": "^1.4.2",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.13",
-    "stripe": "^8.186.1"
+    "stripe": "^8.186.1",
+    "supertest": "^6.1.6"
+  },
+  "devDependencies": {
+    "jest": "^27.4.5"
   }
 }

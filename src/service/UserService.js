@@ -1,0 +1,53 @@
+const User = require("../model/user");
+const Cart = require("../model/cart");
+const CryptoJS = require("crypto-js");
+const jwt = require("jsonwebtoken");
+
+class UserService {
+  register = async (req, res) => {
+    try {
+      //Phần check xem username có trong hệ thông chưa
+      const user = await User.findOneWithDeleted({
+        username: req.body.username,
+      });
+      if (user) {
+        const response = {
+          errorCode: 401,
+          message: "Username already exists",
+        };
+        return res.json(response);
+      }
+
+      const newUser = new User({
+        ...req.body,
+        password: CryptoJS.AES.encrypt(
+          req.body.password,
+          process.env.PASS_SECRET
+        ).toString(),
+      });
+
+      const savedUser = await newUser.save();
+      const { password, ...orthers } = savedUser._doc;
+      const content = {
+        userId: orthers._id,
+        products: [],
+      };
+      const newCart = new Cart(content);
+      await newCart.save();
+      const response = {
+        data: orthers,
+        errorCode: 0,
+        message: "Success",
+      };
+      return res.json(response);
+    } catch (err) {
+      const response = {
+        errorCode: 500,
+        message: "Something went wrong, please try again",
+      };
+      return res.json(response);
+    }
+  };
+}
+
+module.exports = new UserService();

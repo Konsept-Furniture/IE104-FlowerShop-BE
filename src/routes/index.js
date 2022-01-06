@@ -6,6 +6,7 @@ const productRoute = require("./product");
 const categoryRoute = require("./category");
 const supplierRoute = require("./supplier");
 const purchaseOrderRoute = require("./purchaseOrder");
+const testRoute = require("./testRoute");
 
 const initRouter = (app) => {
   app.use("/api/users", userRoute);
@@ -16,7 +17,8 @@ const initRouter = (app) => {
   app.use("/api/categories", categoryRoute);
   app.use("/api/suppliers", supplierRoute);
   app.use("/api/purchase-orders", purchaseOrderRoute);
-  app.use("/", (req, res) => {
+  app.use("/test", testRoute);
+  app.use("/test", (req, res) => {
     return res.json("Hello to Furniture Shop");
   });
 };

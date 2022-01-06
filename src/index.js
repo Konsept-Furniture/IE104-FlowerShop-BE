@@ -1,8 +1,8 @@
 const express = require("express");
 const app = express();
 const dotenv = require("dotenv");
-const connectDB = require("./src/config/db");
-const initRoute = require("./src/routes/index");
+const connectDB = require("./config/db");
+const initRoute = require("./routes/index");
 const cors = require("cors");
 
 app.use(cors());
@@ -21,6 +21,4 @@ app.use(
 
 initRoute(app);
 
-app.listen(process.env.PORT || 5000, () => {
-  console.log("Backend server is running!");
-});
+module.exports = app;
