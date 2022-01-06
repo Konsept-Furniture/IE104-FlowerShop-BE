@@ -2,9 +2,9 @@
   "name": "ie104-flowershop-be",
   "version": "1.0.0",
   "description": "Backend for Flower shop website in IE104-UIT",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "nodemon src/server.js",
+    "start": "node src/server.js",
     "test": "jest --detectOpenHandles"
   },
   "repository": {
