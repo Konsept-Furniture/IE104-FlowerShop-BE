@@ -145,13 +145,18 @@ class OrderController {
   readOrderDetail = async (req, res) => {
     try {
       const order = await Order.findById(req.params.id);
+      const user = await User.findById(req.user.id);
 
-      if (order.userId !== req.user.id) {
-        const response = {
-          errorCode: 403,
-          message: `You are not allowed to work with order with ID(${req.params.id})`,
-        };
-        return res.json(response);
+      console.log(!user.isAdmin);
+
+      if (!user.isAdmin) {
+        if (order.userId !== req.user.id) {
+          const response = {
+            errorCode: 403,
+            message: `You are not allowed to work with order with ID(${req.params.id})`,
+          };
+          return res.json(response);
+        }
       }
 
       let arrayFilterProduct = [];
@@ -292,6 +297,10 @@ class OrderController {
       };
       return res.json(response);
     }
+  };
+
+  readIncome = async (req, res) => {
+    console.log("Fuck you");
   };
 }
 
