@@ -284,6 +284,7 @@ class OrderController {
     arrayDate[1] =
       arrayDate[1].length === 2 ? arrayDate[1] : "0" + arrayDate[1];
 
+    arrayDate[0] = "05";
     const date = new Date(`${arrayDate[2]}-${arrayDate[0]}-01`);
     const january = new Date(date.setMonth(0));
     const januaryLastYear = new Date(date.setMonth(-12));
