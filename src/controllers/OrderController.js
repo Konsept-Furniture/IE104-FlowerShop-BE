@@ -211,7 +211,7 @@ class OrderController {
     // let qDeleted = req.query.deleted;
 
     try {
-      const { page, pageSize, orderBy } = req.query;
+      const { page, pageSize, orderBy, status } = req.query;
       const { limit, offset } = getPagination(page, pageSize);
 
       let filter = {};
@@ -224,7 +224,9 @@ class OrderController {
 
       console.log(filter);
       let data = await Order.paginate(
-        {},
+        {
+          status,
+        },
         {
           offset,
           limit,
@@ -267,78 +269,94 @@ class OrderController {
     }
   };
   readIncome = async (req, res) => {
+    let { type } = req.query;
+    let response;
     const currentDate = new Date().toLocaleString("en-US", {
       timeZone: "Asia/Bangkok",
     });
-    //Day Month Year
+    //Check date
+    console.log(currentDate);
+    //Slpit Day Month Year [Month,Day,Year]
     const splitDate = currentDate.split(",");
     const arrayDate = splitDate[0].split("/");
     arrayDate[0] =
       arrayDate[0].length === 2 ? arrayDate[0] : "0" + arrayDate[0];
     arrayDate[1] =
       arrayDate[1].length === 2 ? arrayDate[1] : "0" + arrayDate[1];
-    const date = new Date(`${arrayDate[2]}-${arrayDate[1]}-${arrayDate[0]}`);
+
+    const date = new Date(`${arrayDate[2]}-${arrayDate[0]}-01`);
     const january = new Date(date.setMonth(0));
     const januaryLastYear = new Date(date.setMonth(-12));
 
     try {
-      const incomeThisYear = await Order.aggregate([
-        { $match: { createdAt: { $gte: january } } },
-        {
-          $project: {
-            month: { $month: "$createdAt" },
-            sales: "$amount",
+      if (type === "year") {
+        const incomeThisYear = await Order.aggregate([
+          { $match: { createdAt: { $gte: january } } },
+          {
+            $project: {
+              month: { $month: "$createdAt" },
+              sales: "$amount",
+            },
           },
-        },
-        {
-          $group: {
-            _id: "$month",
-            total: { $sum: "$sales" },
+          {
+            $group: {
+              _id: "$month",
+              total: { $sum: "$sales" },
+            },
           },
-        },
-      ]);
-      const incomeLastYear = await Order.aggregate([
-        {
-          $match: {
-            createdAt: { $gte: januaryLastYear, $lte: january },
+        ]);
+        const incomeLastYear = await Order.aggregate([
+          {
+            $match: {
+              createdAt: { $gte: januaryLastYear, $lte: january },
+            },
           },
-        },
-        {
-          $project: {
-            month: { $month: "$createdAt" },
-            sales: "$amount",
+          {
+            $project: {
+              month: { $month: "$createdAt" },
+              sales: "$amount",
+            },
           },
-        },
-        {
-          $group: {
-            _id: "$month",
-            total: { $sum: "$sales" },
+          {
+            $group: {
+              _id: "$month",
+              total: { $sum: "$sales" },
+            },
           },
-        },
-      ]);
+        ]);
 
-      const dataThisYear = formatDataMonth(arrayDate[0], incomeThisYear);
-      const dataLastYear = formatDataMonth(arrayDate[0], incomeLastYear);
-      const response = {
-        data: {
-          datasets: [
-            {
-              ordinal: 1,
-              data: dataThisYear.data,
-              label: "This year",
-            },
-            {
-              ordinal: 2,
-              data: dataLastYear.data,
-              label: "Last year",
-            },
-          ],
-          labels: dataLastYear.labels,
-        },
-        errorCode: 0,
-        message: "Success",
-      };
-      return res.json(response);
+        const dataThisYear = formatDataMonth(arrayDate[0], incomeThisYear);
+        const dataLastYear = formatDataMonth(arrayDate[0], incomeLastYear);
+        response = {
+          data: {
+            datasets: [
+              {
+                ordinal: 1,
+                data: dataThisYear.data,
+                label: "This year",
+              },
+              {
+                ordinal: 2,
+                data: dataLastYear.data,
+                label: "Last year",
+              },
+            ],
+            labels: dataLastYear.labels,
+          },
+          errorCode: 0,
+          message: "Success",
+        };
+        return res.json(response);
+      } else if (type === "week") {
+        console.log("Day");
+      } else if (type === "month") {
+        console.log("month");
+      } else {
+        response = {
+          errorCode: 500,
+          message: "Something went wrong, please try again",
+        };
+      }
     } catch (err) {
       const response = {
         errorCode: 500,

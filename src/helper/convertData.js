@@ -18,12 +18,13 @@ const formatDataMonth = (month, arrayAmount) => {
     arrayLabels.push(`${arrayMonthChar[i - 1]}`);
   }
 
-  console.log(array);
-  console.log(arrayLabels);
   return {
     data: array,
     labels: arrayLabels,
   };
 };
 
-module.exports = { formatDataMonth };
+const formatDataDay = () => {
+  
+};
+module.exports = { formatDataMonth, formatDataDay };
