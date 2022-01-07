@@ -222,18 +222,33 @@ class OrderController {
         };
       }
 
-      console.log(filter);
-      let data = await Order.paginate(
-        {
-          status,
-        },
-        {
-          offset,
-          limit,
-          sort: filter,
-        }
-      );
+      console.log(status);
+      let data;
+      if (status) {
+        console.log("Come here khong empty");
+        data = await Order.paginate(
+          {
+            status,
+          },
+          {
+            offset,
+            limit,
+            sort: filter,
+          }
+        );
+      } else {
+        console.log("Come here !== empty");
+        data = await Order.paginate(
+          {},
+          {
+            offset,
+            limit,
+            sort: filter,
+          }
+        );
+      }
 
+      console.log(data.docs);
       let orders = data.docs;
 
       const users = await User.find();
@@ -287,11 +302,11 @@ class OrderController {
     arrayDate[1] =
       arrayDate[1].length === 2 ? arrayDate[1] : "0" + arrayDate[1];
 
-    arrayDate[0] = "05";
     const date = new Date(`${arrayDate[2]}-${arrayDate[0]}-01`);
     //Check date
     // console.log(date);
     const january = new Date(date.setMonth(0));
+    console.log(january);
     const januaryLastYear = new Date(date.setMonth(-12));
 
     //Date now
@@ -448,7 +463,6 @@ class OrderController {
           message: "Success",
         };
       }
-
       return res.json(response);
     } catch (err) {
       console.log("Come error");
