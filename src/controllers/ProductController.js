@@ -120,8 +120,16 @@ class ProductController {
     try {
       let data;
       let filter = {};
-      const { page, pageSize, minPrice, maxPrice, category, orderBy, search } =
-        req.query;
+      const {
+        page,
+        pageSize,
+        minPrice,
+        maxPrice,
+        category,
+        orderBy,
+        search,
+        inStock,
+      } = req.query;
       let condition = category
         ? {
             categories: {
@@ -131,12 +139,14 @@ class ProductController {
               $gte: minPrice || 0,
               $lt: maxPrice || 1000,
             },
+            deleted: false,
           }
         : {
             price: {
               $gte: minPrice || 0,
               $lt: maxPrice || 1000,
             },
+            deleted: false,
           };
       let qSearch = {
         title: {
@@ -153,11 +163,39 @@ class ProductController {
       }
 
       const { limit, offset } = getPagination(page, pageSize);
-      data = await Product.paginate(condition, {
-        offset,
-        limit,
-        sort: filter,
-      });
+
+      if (inStock === "true") {
+        data = await Product.paginate(
+          {
+            ...condition,
+            inStock: true,
+          },
+          {
+            offset,
+            limit,
+            sort: filter,
+          }
+        );
+      } else if (inStock === "false") {
+        data = await Product.paginate(
+          {
+            ...condition,
+            inStock: false,
+          },
+          {
+            offset,
+            limit,
+            sort: filter,
+          }
+        );
+      } else {
+        data = await Product.paginate(condition, {
+          offset,
+          limit,
+          sort: filter,
+        });
+      }
+
       let products = data.docs;
 
       let pagination = {

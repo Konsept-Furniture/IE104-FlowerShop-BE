@@ -29,27 +29,15 @@ const formatDataDay = (day, arrayAmount, date) => {
   let arrayLabels = [];
   const mapData = new Map();
 
-  // console.log(day);
-  // console.log(arrayAmount);
-  // console.log(date.getDate());
+  console.log(day);
+  console.log(arrayAmount);
+  console.log(date.getDate());
   mapData.set(date.getDate(), 0);
-  arrayLabels.push(
-    date.getDate() +
-      " " +
-      arrayMonthChar[date.getMonth()] +
-      " " +
-      date.getFullYear()
-  );
+  arrayLabels.push(date.getDate() + " " + arrayMonthChar[date.getMonth()]);
   for (let i = 0; i < day - 1; i++) {
     date.setDate(date.getDate() - 1);
     mapData.set(date.getDate(), 0);
-    arrayLabels.push(
-      date.getDate() +
-        " " +
-        arrayMonthChar[date.getMonth()] +
-        " " +
-        date.getFullYear()
-    );
+    arrayLabels.push(date.getDate() + " " + arrayMonthChar[date.getMonth()]);
   }
 
   for (let i = 0; i < arrayAmount.length; i++) {

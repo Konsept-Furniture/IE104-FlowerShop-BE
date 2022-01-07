@@ -317,12 +317,32 @@ class OrderController {
       `${arrayDate[2]}-${arrayDate[0]}-${arrayDate[1]}`
     );
     const sevenDaysAgo = new Date(dateNow7.setDate(dateNow7.getDate() - 6));
+    dateNow7.setDate(dateNow7.getDate() + 6);
+    dateNow7.setFullYear(dateNow7.getFullYear() - 1);
+    const dateNow7LastYear = new Date(dateNow7.setDate(dateNow7.getDate()));
+    const sevenDaysAgoLastYear = new Date(
+      dateNow7LastYear.setDate(dateNow7LastYear.getDate() - 6)
+    );
+    dateNow7LastYear.setDate(dateNow7LastYear.getDate() + 6);
+    console.log("dateNow7", dateNow7);
+    console.log("dateNow7LastYear", dateNow7LastYear);
+    console.log("sevenDaysAgoLastYear", sevenDaysAgoLastYear);
 
-    //Find seven days ago
+    //Find 30 days ago
     const dateNow30 = new Date(
       `${arrayDate[2]}-${arrayDate[0]}-${arrayDate[1]}`
     );
     const _30DaysAgo = new Date(dateNow30.setDate(dateNow30.getDate() - 29));
+    dateNow30.setDate(dateNow30.getDate() + 29);
+    dateNow30.setFullYear(dateNow30.getFullYear() - 1);
+    const dateNow30LastYear = new Date(dateNow30.setDate(dateNow30.getDate()));
+    const _30DaysAgoLastYear = new Date(
+      dateNow30LastYear.setDate(dateNow30LastYear.getDate() - 29)
+    );
+    dateNow30LastYear.setDate(dateNow30LastYear.getDate() + 29);
+    console.log("dateNow30", dateNow30);
+    console.log("dateNow30LastYear", dateNow30LastYear);
+    console.log("_30DaysAgoLastYear", _30DaysAgoLastYear);
 
     // console.log(_30DaysAgo);
     // console.log(sevenDaysAgo);
@@ -409,7 +429,38 @@ class OrderController {
           },
         ]);
 
+        const incomeWeekLastYear = await Order.aggregate([
+          {
+            $match: {
+              createdAt: { $gte: sevenDaysAgoLastYear, $lte: dateNow7LastYear },
+            },
+          },
+          {
+            $project: {
+              month: { $month: "$createdAt" },
+              day: { $dayOfMonth: "$createdAt" },
+              year: { $year: "$createdAt" },
+              sales: "$amount",
+            },
+          },
+          {
+            $group: {
+              //  _id: "$month",
+              _id: {
+                day: "$day",
+                // month: "$month",
+                // year: "$year",
+              },
+              total: { $sum: "$sales" },
+            },
+          },
+        ]);
         const dataThisYear = formatDataDay(7, incomeWeek, dateNow);
+        dateNow.setDate(dateNow.getDate() + 6);
+        // console.log(dateNow);
+        const dataLastYear = formatDataDay(7, incomeWeekLastYear, dateNow);
+
+        // console.log(dataLastYear);
         response = {
           data: {
             datasets: [
@@ -417,6 +468,11 @@ class OrderController {
                 ordinal: 1,
                 data: dataThisYear.data,
                 label: "This year",
+              },
+              {
+                ordinal: 2,
+                data: dataLastYear.data,
+                label: "Last year",
               },
             ],
             labels: dataThisYear.labels,
@@ -447,7 +503,38 @@ class OrderController {
             },
           },
         ]);
+        const incomeMonthLastYear = await Order.aggregate([
+          {
+            $match: {
+              createdAt: {
+                $gte: _30DaysAgoLastYear,
+                $lte: dateNow30LastYear,
+              },
+            },
+          },
+          {
+            $project: {
+              month: { $month: "$createdAt" },
+              day: { $dayOfMonth: "$createdAt" },
+              year: { $year: "$createdAt" },
+              sales: "$amount",
+            },
+          },
+          {
+            $group: {
+              //  _id: "$month",
+              _id: {
+                day: "$day",
+                month: "$month",
+                year: "$year",
+              },
+              total: { $sum: "$sales" },
+            },
+          },
+        ]);
         const dataThisYear = formatDataDay(30, incomeMonth, dateNow);
+        dateNow.setDate(dateNow.getDate() + 29);
+        const dataLastYear = formatDataDay(30, incomeMonthLastYear, dateNow);
         response = {
           data: {
             datasets: [
@@ -455,6 +542,11 @@ class OrderController {
                 ordinal: 1,
                 data: dataThisYear.data,
                 label: "This year",
+              },
+              {
+                ordinal: 2,
+                data: dataLastYear.data,
+                label: "Last year",
               },
             ],
             labels: dataThisYear.labels,
