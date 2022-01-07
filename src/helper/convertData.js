@@ -1,4 +1,4 @@
-const { arrayMonthChar, arrayMonthNumber } = require("../helper/date");
+const { arrayMonthChar } = require("../helper/date");
 
 const formatDataMonth = (month, arrayAmount) => {
   let array = [];
@@ -24,7 +24,42 @@ const formatDataMonth = (month, arrayAmount) => {
   };
 };
 
-const formatDataDay = () => {
-  
+const formatDataDay = (day, arrayAmount, date) => {
+  let array = [];
+  let arrayLabels = [];
+  const mapData = new Map();
+
+  // console.log(day);
+  // console.log(arrayAmount);
+  // console.log(date.getDate());
+  mapData.set(date.getDate(), 0);
+  arrayLabels.push(
+    date.getDate() +
+      " " +
+      arrayMonthChar[date.getMonth()] +
+      " " +
+      date.getFullYear()
+  );
+  for (let i = 0; i < day - 1; i++) {
+    date.setDate(date.getDate() - 1);
+    mapData.set(date.getDate(), 0);
+    arrayLabels.push(
+      date.getDate() +
+        " " +
+        arrayMonthChar[date.getMonth()] +
+        " " +
+        date.getFullYear()
+    );
+  }
+
+  for (let i = 0; i < arrayAmount.length; i++) {
+    mapData.set(arrayAmount[i]._id.day, arrayAmount[i].total);
+  }
+  array = Array.from(mapData.values());
+
+  return {
+    data: array,
+    labels: arrayLabels,
+  };
 };
 module.exports = { formatDataMonth, formatDataDay };

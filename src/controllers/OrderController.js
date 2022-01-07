@@ -4,7 +4,7 @@ const Cart = require("../model/cart");
 const Product = require("../model/product");
 const getPagination = require("../helper/getPagination");
 const { arrayMonthChar, arrayMonthNumber } = require("../helper/date");
-const { formatDataMonth } = require("../helper/convertData");
+const { formatDataMonth, formatDataDay } = require("../helper/convertData");
 
 class OrderController {
   createOrder = async (req, res) => {
@@ -270,12 +270,15 @@ class OrderController {
   };
   readIncome = async (req, res) => {
     let { type } = req.query;
-    let response;
+    let response = {
+      errorCode: 500,
+      message: "Something went wrong, please try again",
+    };
     const currentDate = new Date().toLocaleString("en-US", {
       timeZone: "Asia/Bangkok",
     });
     //Check date
-    console.log(currentDate);
+    // console.log(currentDate);
     //Slpit Day Month Year [Month,Day,Year]
     const splitDate = currentDate.split(",");
     const arrayDate = splitDate[0].split("/");
@@ -286,9 +289,28 @@ class OrderController {
 
     arrayDate[0] = "05";
     const date = new Date(`${arrayDate[2]}-${arrayDate[0]}-01`);
+    //Check date
+    // console.log(date);
     const january = new Date(date.setMonth(0));
     const januaryLastYear = new Date(date.setMonth(-12));
 
+    //Date now
+    const dateNow = new Date(`${arrayDate[2]}-${arrayDate[0]}-${arrayDate[1]}`);
+
+    //Find seven days ago
+    const dateNow7 = new Date(
+      `${arrayDate[2]}-${arrayDate[0]}-${arrayDate[1]}`
+    );
+    const sevenDaysAgo = new Date(dateNow7.setDate(dateNow7.getDate() - 6));
+
+    //Find seven days ago
+    const dateNow30 = new Date(
+      `${arrayDate[2]}-${arrayDate[0]}-${arrayDate[1]}`
+    );
+    const _30DaysAgo = new Date(dateNow30.setDate(dateNow30.getDate() - 29));
+
+    // console.log(_30DaysAgo);
+    // console.log(sevenDaysAgo);
     try {
       if (type === "year") {
         const incomeThisYear = await Order.aggregate([
@@ -349,16 +371,87 @@ class OrderController {
         };
         return res.json(response);
       } else if (type === "week") {
-        console.log("Day");
-      } else if (type === "month") {
-        console.log("month");
-      } else {
+        const incomeWeek = await Order.aggregate([
+          { $match: { createdAt: { $gte: sevenDaysAgo } } },
+          {
+            $project: {
+              month: { $month: "$createdAt" },
+              day: { $dayOfMonth: "$createdAt" },
+              year: { $year: "$createdAt" },
+              sales: "$amount",
+            },
+          },
+          {
+            $group: {
+              //  _id: "$month",
+              _id: {
+                day: "$day",
+                // month: "$month",
+                // year: "$year",
+              },
+              total: { $sum: "$sales" },
+            },
+          },
+        ]);
+
+        const dataThisYear = formatDataDay(7, incomeWeek, dateNow);
         response = {
-          errorCode: 500,
-          message: "Something went wrong, please try again",
+          data: {
+            datasets: [
+              {
+                ordinal: 1,
+                data: dataThisYear.data,
+                label: "This year",
+              },
+            ],
+            labels: dataThisYear.labels,
+          },
+          errorCode: 0,
+          message: "Success",
+        };
+      } else if (type === "month") {
+        const incomeMonth = await Order.aggregate([
+          { $match: { createdAt: { $gte: _30DaysAgo } } },
+          {
+            $project: {
+              month: { $month: "$createdAt" },
+              day: { $dayOfMonth: "$createdAt" },
+              year: { $year: "$createdAt" },
+              sales: "$amount",
+            },
+          },
+          {
+            $group: {
+              //  _id: "$month",
+              _id: {
+                day: "$day",
+                month: "$month",
+                year: "$year",
+              },
+              total: { $sum: "$sales" },
+            },
+          },
+        ]);
+        const dataThisYear = formatDataDay(30, incomeMonth, dateNow);
+        response = {
+          data: {
+            datasets: [
+              {
+                ordinal: 1,
+                data: dataThisYear.data,
+                label: "This year",
+              },
+            ],
+            labels: dataThisYear.labels,
+          },
+          errorCode: 0,
+          message: "Success",
         };
       }
+
+      return res.json(response);
     } catch (err) {
+      console.log("Come error");
       const response = {
         errorCode: 500,
         message: "Something went wrong, please try again",
