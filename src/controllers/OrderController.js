@@ -604,7 +604,7 @@ class OrderController {
           $gte: dateNow,
         },
       });
-      const users = await User.find();
+      // const users = await User.find();
       const usersLastMonth = await User.find({
         createdAt: {
           $gte: dateLastMonth,
@@ -625,7 +625,7 @@ class OrderController {
         },
       });
 
-      const sales = sumSales(orders);
+      // const sales = sumSales(orders);
       const salesCurrentMonth = sumSales(ordersCurrentMonth);
       const salesLastMonth = sumSales(ordersLastMonth);
 
@@ -650,17 +650,17 @@ class OrderController {
           dataMenu: [
             {
               label: "Total Customer",
-              value: kFormatter(users.length),
+              value: kFormatter(usersCurrentMonth.length),
               compareLastMonth: compareUser,
             },
             {
               label: "Total Orders",
-              value: orders.length,
+              value: ordersCurrentMonth.length,
               compareLastMonth: compareOrder,
             },
             {
               label: "Sales",
-              value: `$${kFormatter(sales)}`,
+              value: `$${kFormatter(salesCurrentMonth)}`,
               compareLastMonth: compareSales,
             },
           ],
