@@ -192,7 +192,6 @@ class UserController {
       return res.json(response);
     }
   };
-
   readAllUser = async (req, res) => {
     let data;
     let filter = {};
@@ -204,6 +203,8 @@ class UserController {
         [arraySort[0]]: arraySort[1],
       };
     }
+
+    console.log(filter);
     const { limit, offset } = getPagination(page, pageSize);
     try {
       data = await User.paginate(

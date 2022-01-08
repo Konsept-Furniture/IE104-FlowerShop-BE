@@ -11,6 +11,7 @@ const {
 } = require("../helper/compareLastMonth");
 const { formatDataMonth, formatDataDay } = require("../helper/convertData");
 const user = require("../model/user");
+const { listIndexes } = require("../model/order");
 
 class OrderController {
   createOrder = async (req, res) => {
@@ -150,6 +151,7 @@ class OrderController {
       return res.json(response);
     }
   };
+
   readOrderDetail = async (req, res) => {
     try {
       const order = await Order.findById(req.params.id);
@@ -171,6 +173,8 @@ class OrderController {
       let arrayProduct = [];
       let arrayID = [];
       let orthers = [];
+
+      //Loop array orders
       order.products.forEach((item) => {
         arrayID.push(item.productId);
         orthers.push({
@@ -213,6 +217,44 @@ class OrderController {
       return res.json(response);
     }
   };
+  getProductInfo = (order, products) => {
+    let arrayFilterProduct = [];
+    let arrayProduct = [];
+    let arrayID = [];
+    let orthers = [];
+
+    //Loop array orders
+    order.products.forEach((item) => {
+      arrayID.push(item.productId);
+      orthers.push({
+        quantity: item.quantity || 0,
+        amount: item.amount || 0,
+      });
+    });
+
+    arrayFilterProduct = products.filter((item) =>
+      arrayID.includes(item._id.toString())
+    );
+
+    for (let i = 0; i < arrayID.length; i++) {
+      arrayFilterProduct.forEach((item) => {
+        if (item._id.toString() === arrayID[i]) {
+          const newProduct = {
+            ...orthers[i],
+            productId: arrayID[i],
+            img: item._doc.img,
+            title: item._doc.title,
+            price: item._doc.price,
+          };
+          arrayProduct.push(newProduct);
+        }
+      });
+    }
+
+    // console.log(arrayProduct);
+    // console.log({ ...order._doc, products: arrayProduct });
+    return arrayProduct;
+  };
   readAllOrders = async (req, res) => {
     // let qDeleted = req.query.deleted;
     try {
@@ -227,7 +269,6 @@ class OrderController {
         };
       }
 
-      console.log(status);
       let data;
       if (status) {
         console.log("Come here khong empty");
@@ -253,15 +294,27 @@ class OrderController {
         );
       }
 
-      console.log(data.docs);
       let orders = data.docs;
+
+      const Products = await Product.find();
+
+      let array = [];
+
+      orders.forEach((item) => {
+        // console.log(item.userId);
+        console.log("Come here map");
+        let arrayProduct = this.getProductInfo(item, Products);
+        array.push(arrayProduct);
+      });
+
+      console.log("array", array);
 
       const users = await User.find();
       // console.log(users);
-      const results = orders.map((item) => {
+      const results = orders.map((item, index) => {
         // console.log(item.userId);
         let user = users.filter((u) => u._id.toString() === item.userId);
-        return { ...item._doc, user: user[0] };
+        return { ...item._doc, user: user[0], products: array[index] };
       });
 
       let pagination = {
@@ -570,7 +623,6 @@ class OrderController {
       return res.json(response);
     }
   };
-
   readCardInformation = async (req, res) => {
     let response = {
       errorCode: 500,
