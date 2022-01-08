@@ -215,7 +215,6 @@ class OrderController {
   };
   readAllOrders = async (req, res) => {
     // let qDeleted = req.query.deleted;
-
     try {
       const { page, pageSize, orderBy, status } = req.query;
       const { limit, offset } = getPagination(page, pageSize);

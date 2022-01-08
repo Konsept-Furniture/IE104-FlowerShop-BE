@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const mongooseDelete = require("mongoose-delete");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 const UserSchema = new mongoose.Schema(
   {
@@ -20,13 +20,12 @@ const UserSchema = new mongoose.Schema(
     phone: { type: String, default: "" },
     email: { type: String, default: "" },
     name: { type: String, default: "" },
+    deleted: { type: Boolean, default: false },
+    deletedAt: { type: Date, default: null },
   },
   { timestamps: true }
 );
 
-UserSchema.plugin(mongooseDelete, {
-  deletedAt: true,
-  overrideMethods: "all",
-});
+UserSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model("User", UserSchema);

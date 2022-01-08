@@ -1,9 +1,10 @@
 const User = require("../model/user");
 const CryptoJS = require("crypto-js");
+const getPagination = require("../helper/getPagination");
 
 class UserController {
   updateUser = async (req, res) => {
-    const user = await User.findOneWithDeleted({ _id: req.params.id });
+    const user = await User.findOne({ _id: req.params.id });
     if (!user) {
       const response = {
         errorCode: 404,
@@ -40,7 +41,7 @@ class UserController {
     }
   };
   updateUserInformation = async (req, res) => {
-    const user = await User.findOneWithDeleted({ _id: req.user.id });
+    const user = await User.findOne({ _id: req.user.id });
     if (!user) {
       const response = {
         errorCode: 404,
@@ -78,7 +79,9 @@ class UserController {
   };
   restoreUser = async (req, res) => {
     try {
-      await User.restore({ _id: req.params.id });
+      await User.findByIdAndUpdate(req.params.id, {
+        $set: { deleted: false, deletedAt: null },
+      });
       const response = {
         errorCode: 0,
         message: "Resore successfully",
@@ -96,7 +99,13 @@ class UserController {
     try {
       const user = await User.findOne({ _id: req.params.id });
       if (user) {
-        await User.delete({ _id: req.params.id });
+        console.log(req.params.id);
+        await User.updateOne(
+          { _id: req.params.id },
+          {
+            $set: { deleted: true, deletedAt: Date.now() },
+          }
+        );
         const response = {
           errorCode: 0,
           message: "The order has been put in the trash...",
@@ -119,7 +128,7 @@ class UserController {
   destroyUser = async (req, res) => {
     console.log("Come here");
     try {
-      await User.deleteOne({ _id: req.params.id });
+      await User.findByIdAndDelete(req.params.id);
       const response = {
         errorCode: 0,
         message: "User has been deleted...",
@@ -135,7 +144,7 @@ class UserController {
   };
   readUser = async (req, res) => {
     try {
-      const user = await User.findOneWithDeleted({ _id: req.params.id });
+      const user = await User.findOne({ _id: req.params.id });
       if (!user) {
         const response = {
           errorCode: 404,
@@ -160,7 +169,7 @@ class UserController {
   };
   readUserInformation = async (req, res) => {
     try {
-      const user = await User.findOneWithDeleted({ _id: req.user.id });
+      const user = await User.findOne({ _id: req.user.id });
       if (!user) {
         const response = {
           errorCode: 404,
@@ -183,16 +192,44 @@ class UserController {
       return res.json(response);
     }
   };
+
   readAllUser = async (req, res) => {
-    console.log("Here", req.query.deleted);
-    let qDeleted = req.query.deleted;
+    let data;
+    let filter = {};
+    const { page, pageSize, orderBy } = req.query;
+
+    if (orderBy) {
+      let arraySort = orderBy.split("-");
+      filter = {
+        [arraySort[0]]: arraySort[1],
+      };
+    }
+    const { limit, offset } = getPagination(page, pageSize);
     try {
-      const users = qDeleted ? await User.findDeleted() : await User.find();
+      data = await User.paginate(
+        {},
+        {
+          offset,
+          limit,
+          sort: filter,
+        }
+      );
+      let users = data.docs;
+
+      let pagination = {
+        totalItems: data.totalDocs,
+        totalPages: data.totalPages,
+        currentPage: data.page,
+        pageSize: +pageSize || 3,
+      };
+
       const response = {
         data: users,
+        pagination: pagination,
         errorCode: 0,
         message: "Success",
       };
+
       return res.json(response);
     } catch (err) {
       const response = {

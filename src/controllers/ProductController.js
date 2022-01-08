@@ -66,16 +66,28 @@ class ProductController {
     }
   };
   deleteProduct = async (req, res) => {
+    console.log("Come here", req.params.id);
     try {
-      await Product.findByIdAndUpdate(req.params.id, {
-        $set: { deleted: true, deletedAt: Date.now() },
-      });
+      // await Product.findByIdAndUpdate(req.params.id, {
+      //   $set: { deleted: true, deletedAt: Date.now() },
+      // });
+      const updatedProduct = await Product.findByIdAndUpdate(
+        req.params.id,
+        {
+          $set: { deleted: true, deletedAt: Date.now() },
+        },
+        { new: true }
+      );
+      console.log("Come here", updatedProduct);
+
       const response = {
         errorCode: 0,
         message: "The product has been put in the trash...",
       };
       return res.json(response);
     } catch (err) {
+      console.log("Error", err);
+
       const response = {
         errorCode: 500,
         message: "Something went wrong, please try again",
@@ -116,6 +128,7 @@ class ProductController {
       return res.json(response);
     }
   };
+  
   readAllProductCategory = async (req, res) => {
     try {
       let data;
