@@ -4,7 +4,11 @@ const Cart = require("../model/cart");
 const Product = require("../model/product");
 const getPagination = require("../helper/getPagination");
 const { arrayMonthChar, arrayMonthNumber } = require("../helper/date");
-const compareLastMonth = require("../helper/compareLastMonth");
+const {
+  compareLastMonth,
+  sumSales,
+  kFormatter,
+} = require("../helper/compareLastMonth");
 const { formatDataMonth, formatDataDay } = require("../helper/convertData");
 const user = require("../model/user");
 
@@ -600,6 +604,7 @@ class OrderController {
           $gte: dateNow,
         },
       });
+      const users = await User.find();
       const usersLastMonth = await User.find({
         createdAt: {
           $gte: dateLastMonth,
@@ -607,13 +612,64 @@ class OrderController {
         },
       });
 
+      const ordersCurrentMonth = await Order.find({
+        createdAt: {
+          $gte: dateNow,
+        },
+      });
+      const orders = await Order.find();
+      const ordersLastMonth = await Order.find({
+        createdAt: {
+          $gte: dateLastMonth,
+          $lte: dateNow,
+        },
+      });
+
+      const sales = sumSales(orders);
+      const salesCurrentMonth = sumSales(ordersCurrentMonth);
+      const salesLastMonth = sumSales(ordersLastMonth);
+
       const compareUser = compareLastMonth(
         usersCurrentMonth.length,
         usersLastMonth.length
       );
-      console.log(usersCurrentMonth.length);
-      console.log(usersLastMonth.length);
-      console.log(compareUser);
+      const compareOrder = compareLastMonth(
+        ordersCurrentMonth.length,
+        ordersLastMonth.length
+      );
+      const compareSales = compareLastMonth(salesCurrentMonth, salesLastMonth);
+
+      // console.log(usersCurrentMonth.length);
+      // console.log(users.length);
+      // console.log(usersLastMonth.length);
+      // console.log(compareUser.toFixed(1));
+      // console.log(sales);
+
+      response = {
+        data: {
+          dataMenu: [
+            {
+              label: "Total Customer",
+              value: kFormatter(users.length),
+              compareLastMonth: compareUser,
+            },
+            {
+              label: "Total Orders",
+              value: orders.length,
+              compareLastMonth: compareOrder,
+            },
+            {
+              label: "Sales",
+              value: `$${kFormatter(sales)}`,
+              compareLastMonth: compareSales,
+            },
+          ],
+        },
+        errorCode: 0,
+        message: "Success",
+      };
+
+      return res.json(respones);
     } catch (error) {
       return res.json(response);
     }
