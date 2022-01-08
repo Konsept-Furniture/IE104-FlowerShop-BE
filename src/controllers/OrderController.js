@@ -4,7 +4,9 @@ const Cart = require("../model/cart");
 const Product = require("../model/product");
 const getPagination = require("../helper/getPagination");
 const { arrayMonthChar, arrayMonthNumber } = require("../helper/date");
+const compareLastMonth = require("../helper/compareLastMonth");
 const { formatDataMonth, formatDataDay } = require("../helper/convertData");
+const user = require("../model/user");
 
 class OrderController {
   createOrder = async (req, res) => {
@@ -583,7 +585,38 @@ class OrderController {
       arrayDate[0].length === 2 ? arrayDate[0] : "0" + arrayDate[0];
     arrayDate[1] =
       arrayDate[1].length === 2 ? arrayDate[1] : "0" + arrayDate[1];
-    console.log("Come here");
+
+    //Date now
+    const dateNow = new Date(`${arrayDate[2]}-${arrayDate[0]}-01`);
+    const dateLastMonth = new Date(dateNow.setMonth(dateNow.getMonth() - 1));
+    dateNow.setMonth(dateNow.getMonth() + 1);
+
+    console.log("dateNow", dateNow);
+    console.log("dateLastMonth", dateLastMonth);
+
+    try {
+      const usersCurrentMonth = await User.find({
+        createdAt: {
+          $gte: dateNow,
+        },
+      });
+      const usersLastMonth = await User.find({
+        createdAt: {
+          $gte: dateLastMonth,
+          $lte: dateNow,
+        },
+      });
+
+      const compareUser = compareLastMonth(
+        usersCurrentMonth.length,
+        usersLastMonth.length
+      );
+      console.log(usersCurrentMonth.length);
+      console.log(usersLastMonth.length);
+      console.log(compareUser);
+    } catch (error) {
+      return res.json(response);
+    }
   };
 }
 

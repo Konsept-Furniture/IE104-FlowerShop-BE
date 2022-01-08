@@ -18,6 +18,8 @@ const formatDataMonth = (month, arrayAmount) => {
     arrayLabels.push(`${arrayMonthChar[i - 1]}`);
   }
 
+  array = array.reverse();
+  arrayLabels = arrayLabels.reverse();
   return {
     data: array,
     labels: arrayLabels,
@@ -45,6 +47,8 @@ const formatDataDay = (day, arrayAmount, date) => {
   }
   array = Array.from(mapData.values());
 
+  array = array.reverse();
+  arrayLabels = arrayLabels.reverse();
   return {
     data: array,
     labels: arrayLabels,
