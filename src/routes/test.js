@@ -19,3 +19,22 @@ const data = {
   ],
   labels: ["1 Aug", "2 Aug", "3 Aug", "4 Aug", "5 Aug", "6 Aug", "7 aug"],
 };
+
+
+const dataMenu = [
+  {
+    label: "Total Customer",
+    value: "1,6k",
+    compareLastMonth: 0.16,
+  },
+  {
+    label: "Total Orders",
+    value: "300",
+    compareLastMonth: -0.16,
+  },
+  {
+    label: "Sales",
+    value: "$23k",
+    compareLastMonth: 0.5,
+  },
+];

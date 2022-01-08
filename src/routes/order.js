@@ -30,6 +30,13 @@ router.get("/:id", verifyToken, OrderController.readOrderDetail);
 //GET MONTHLY INCOME
 router.get("/stats/income", verifyTokenAndAdmin, OrderController.readIncome);
 
+//GET CARD INFORMATION
+router.get(
+  "/stats/card",
+  verifyTokenAndAdmin,
+  OrderController.readCardInformation
+);
+
 //GET ALL ORDERS
 router.get("/", verifyTokenAndAdmin, OrderController.readAllOrders);
 

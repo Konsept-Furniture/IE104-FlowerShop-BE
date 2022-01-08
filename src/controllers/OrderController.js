@@ -565,6 +565,26 @@ class OrderController {
       return res.json(response);
     }
   };
+
+  readCardInformation = async (req, res) => {
+    let response = {
+      errorCode: 500,
+      message: "Something went wrong, please try again",
+    };
+    const currentDate = new Date().toLocaleString("en-US", {
+      timeZone: "Asia/Bangkok",
+    });
+    //Check date
+    // console.log(currentDate);
+    //Slpit Day Month Year [Month,Day,Year]
+    const splitDate = currentDate.split(",");
+    const arrayDate = splitDate[0].split("/");
+    arrayDate[0] =
+      arrayDate[0].length === 2 ? arrayDate[0] : "0" + arrayDate[0];
+    arrayDate[1] =
+      arrayDate[1].length === 2 ? arrayDate[1] : "0" + arrayDate[1];
+    console.log("Come here");
+  };
 }
 
 module.exports = new OrderController();
