@@ -168,6 +168,7 @@ class UserController {
       return res.json(response);
     }
   };
+
   readUserInformation = async (req, res) => {
     try {
       const user = await User.findOne({ _id: req.user.id });
@@ -179,8 +180,15 @@ class UserController {
         return res.json(response);
       }
       const { password, ...orthers } = user._doc;
+
+      const ordersUser = await Order.find({
+        userId: orthers._id.toString(),
+      });
+
+      let result = { ...orthers, orders: ordersUser };
+
       const response = {
-        data: orthers,
+        data: result,
         errorCode: 0,
         message: "Success",
       };
