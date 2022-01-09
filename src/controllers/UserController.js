@@ -209,9 +209,10 @@ class UserController {
     orders.forEach((item) => {
       if (item.userId === userId) {
         orderCount++;
-        if (item.status === "DELIVERIED") {
-          amountTotal += item.amount;
-        }
+        // if (item.status === "DELIVERIED") {
+
+        // }
+        amountTotal += item.amount;
       }
     });
 
