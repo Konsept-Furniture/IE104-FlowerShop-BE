@@ -1,4 +1,5 @@
 const User = require("../model/user");
+const Order = require("../model/order");
 const CryptoJS = require("crypto-js");
 const getPagination = require("../helper/getPagination");
 
@@ -192,6 +193,22 @@ class UserController {
       return res.json(response);
     }
   };
+
+  caculatorOrderCountAndAmount = (orders, userId) => {
+    let orderCount = 0;
+    let amountTotal = 0;
+
+    orders.forEach((item) => {
+      if (item.userId === userId) {
+        orderCount++;
+        if (item.status === "DELIVERIED") {
+          amountTotal += item.amount;
+        }
+      }
+    });
+
+    return { orderCount, amountTotal };
+  };
   readAllUser = async (req, res) => {
     let data;
     let filter = {};
@@ -216,6 +233,21 @@ class UserController {
         }
       );
       let users = data.docs;
+
+      //Get count order and total
+
+      const orders = await Order.find();
+
+      users = users.map((item, index) => {
+        let newItem = this.caculatorOrderCountAndAmount(
+          orders,
+          item._id.toString()
+        );
+        return { ...item._doc, ...newItem };
+      });
+
+      // console.log("data users", users);
+      // console.log("orders", orders);
 
       let pagination = {
         totalItems: data.totalDocs,
