@@ -24,6 +24,13 @@ router.patch("/:id", verifyToken, OrderController.restoreOrder);
 //GET USER ORDERS
 router.get("/user-orders", verifyToken, OrderController.readUserOrders);
 
+//GET ORDERS BY USERID
+router.get(
+  "/order-userid/:userId",
+  verifyTokenAndAdmin,
+  OrderController.readOrderByUserId
+);
+
 //GET ORDER DETAIL
 router.get("/:id", verifyToken, OrderController.readOrderDetail);
 

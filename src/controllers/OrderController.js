@@ -126,12 +126,34 @@ class OrderController {
     }
   };
   readUserOrders = async (req, res) => {
-    console.log(">>Check get order");
-    // let qDeleted = req.query.deleted;
-    // console.log("Check deleted ", qDeleted);
     try {
       const orders = await Order.find({
         userId: req.user.id,
+        deleted: false,
+      }).sort({
+        createdAt: "desc",
+      });
+
+      const response = {
+        data: orders,
+        errorCode: 0,
+        message: "Success",
+      };
+      return res.json(response);
+    } catch (err) {
+      const response = {
+        errorCode: 500,
+        message: "Something went wrong, please try again",
+      };
+      return res.json(response);
+    }
+  };
+
+  readOrderByUserId = async (req, res) => {
+    console.log(req.params);
+    try {
+      const orders = await Order.find({
+        userId: req.params.userId,
         deleted: false,
       }).sort({
         createdAt: "desc",
@@ -217,6 +239,7 @@ class OrderController {
       return res.json(response);
     }
   };
+
   getProductInfo = (order, products) => {
     let arrayFilterProduct = [];
     let arrayProduct = [];
