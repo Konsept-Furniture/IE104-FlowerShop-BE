@@ -221,7 +221,7 @@ class UserController {
   readAllUser = async (req, res) => {
     let data;
     let filter = {};
-    const { page, pageSize, orderBy } = req.query;
+    const { page, pageSize, orderBy, search } = req.query;
 
     if (orderBy) {
       let arraySort = orderBy.split("-");
@@ -230,11 +230,34 @@ class UserController {
       };
     }
 
-    console.log(filter);
+    let qSearch = {
+      $or: [
+        {
+          name: {
+            $regex: new RegExp(search, "i") || "",
+          },
+        },
+        {
+          email: {
+            $regex: new RegExp(search, "i") || "",
+          },
+        },
+        {
+          phone: {
+            $regex: new RegExp(search, "i") || "",
+          },
+        },
+      ],
+    };
+
+    console.log(search);
+
     const { limit, offset } = getPagination(page, pageSize);
     try {
       data = await User.paginate(
-        {},
+        {
+          ...qSearch
+        },
         {
           offset,
           limit,
