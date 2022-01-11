@@ -11,7 +11,8 @@ const {
 } = require("../helper/compareLastMonth");
 const { formatDataMonth, formatDataDay } = require("../helper/convertData");
 const user = require("../model/user");
-const { listIndexes } = require("../model/order");
+const pdfTemplate = require("../document/invoice");
+const pdf = require("html-pdf");
 
 class OrderController {
   createOrder = async (req, res) => {
@@ -747,6 +748,30 @@ class OrderController {
     } catch (error) {
       return res.json(response);
     }
+  };
+
+  generatePDF = (req, res) => {
+    console.log("come here");
+    const options = {
+      format: "A4",
+    };
+    let data = {
+      order: {
+        name: "Đinh Huỳnh Thái Bình",
+        orderId: "999999999999",
+        phone: "0814251252",
+        address: "Ấp Đồng Ky Xã Quốc Thái Huyện An Phú Tỉnh An Giang",
+      },
+    };
+    pdf
+      .create(pdfTemplate(data), options)
+      .toFile(`${__dirname}/result.pdf`, (err) => {
+        if (err) {
+          res.send(Promise.reject());
+        }
+
+        res.sendFile(`${__dirname}/result.pdf`);
+      });
   };
 }
 

@@ -5,8 +5,8 @@ const connectDB = require("./src/config/db");
 const initRoute = require("./src/routes/index");
 const cors = require("cors");
 
-app.use(cors());
 
+app.use(cors());
 dotenv.config();
 connectDB.connect();
 

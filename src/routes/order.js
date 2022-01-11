@@ -9,6 +9,9 @@ const OrderController = require("../controllers/OrderController");
 //CREATE ORDER- OK
 router.post("/", verifyToken, OrderController.createOrder);
 
+//CREATE PDF
+router.get("/generate-pdf/:orderId", OrderController.generatePDF);
+
 //UPDATE ORDER - OK
 router.put("/:id", verifyToken, OrderController.updateOrder);
 
