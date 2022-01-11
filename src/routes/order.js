@@ -10,7 +10,10 @@ const OrderController = require("../controllers/OrderController");
 router.post("/", verifyToken, OrderController.createOrder);
 
 //CREATE PDF
-router.get("/generate-pdf/:orderId", OrderController.generatePDF);
+router.post("/generate-pdf", OrderController.generatePDF);
+
+//GET PDF
+router.get("/fetch-pdf", OrderController.fetchPDF);
 
 //UPDATE ORDER - OK
 router.put("/:id", verifyToken, OrderController.updateOrder);

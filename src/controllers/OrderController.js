@@ -769,9 +769,14 @@ class OrderController {
         if (err) {
           res.send(Promise.reject());
         }
-
-        res.sendFile(`${__dirname}/result.pdf`);
+        console.log("Success");
+        res.send(Promise.resolve());
       });
+  };
+
+  fetchPDF = (req, res) => {
+    console.log(__dirname);
+    res.sendFile(`${__dirname}/result.pdf`);
   };
 }
 
