@@ -6,11 +6,11 @@ const {
 const router = express.Router();
 const OrderController = require("../controllers/OrderController");
 
-//CREATE ORDER- OK
-router.post("/", verifyToken, OrderController.createOrder);
-
 //CREATE PDF
 router.post("/generate-pdf", OrderController.generatePDF);
+
+//CREATE ORDER- OK
+router.post("/", verifyToken, OrderController.createOrder);
 
 //GET PDF
 router.get("/fetch-pdf", OrderController.fetchPDF);

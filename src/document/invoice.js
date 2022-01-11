@@ -124,7 +124,7 @@ module.exports = ({ order }) => {
         align-items: flex-end;
         justify-content: space-between; */
         line-height: 1.5;
-        margin-left: 500px;
+        margin-left: 300px;
       }
       .payment__item-price {
         float: right;
