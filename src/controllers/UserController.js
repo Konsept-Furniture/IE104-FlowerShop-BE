@@ -256,7 +256,8 @@ class UserController {
     try {
       data = await User.paginate(
         {
-          ...qSearch
+          ...qSearch,
+          deleted: false,
         },
         {
           offset,
