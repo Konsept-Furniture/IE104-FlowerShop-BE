@@ -178,6 +178,7 @@ class ProductController {
       const { limit, offset } = getPagination(page, pageSize);
 
       if (inStock === "true") {
+        console.log("Come here true");
         data = await Product.paginate(
           {
             ...condition,
