@@ -37,7 +37,7 @@ module.exports = ({ order }) => {
         width: 200px;
       }
       .header__text {
-        font-size: 44px;
+        font-size: 50px;
         font-weight: bold;
         color: #dcb181;
         float: right;
@@ -138,7 +138,7 @@ module.exports = ({ order }) => {
         align-items: flex-end;
         justify-content: space-between; */
         line-height: 1.5;
-        margin-left: 200px;
+        margin-left: 350px;
         font-size: 10px;
       }
       .payment__item-price {
