@@ -24,8 +24,8 @@ module.exports = ({ order }) => {
     <style>
       .wrapper {
         margin: 25px;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        font-size: 12px;
+        font-family: "Inter", Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 10px;
       }
 
       .header {
@@ -205,9 +205,9 @@ module.exports = ({ order }) => {
           <p>${order.deliveryInfo.name}</p>
           <p>${order.deliveryInfo.phone}</p>
           <p>${order.deliveryInfo.email}</p>
-          <p>${order.deliveryInfo.address.street}  ${
+          <p>${order.deliveryInfo.address.street},  ${
     order.deliveryInfo.address.ward
-  }  ${order.deliveryInfo.address.district}  ${
+  },  ${order.deliveryInfo.address.district},  ${
     order.deliveryInfo.address.province
   }</p>
         </div>
