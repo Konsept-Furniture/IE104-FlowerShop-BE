@@ -176,8 +176,8 @@ module.exports = ({ order }) => {
           </div>
           <div class="information__item__body">
             <p>FURNITURE SHOP</p>
-            <p>Room 999, 99/ZZ, HAKUNA MATATA </p>
-            <p>99-99 HMHMHMHMHM, HAKUNA MATATA </ p>
+            <p>Lầu 07, Block E, University of Information Technology </p>
+            <p>Quarter 6, Linh Trung Ward, Thu Duc District, Ho Chi Minh City.</ p>
             <p>VIET NAM</p>
           </div>
         </div>
@@ -192,7 +192,6 @@ module.exports = ({ order }) => {
             <p>Order NO.: ${order._id}</p>
             <p>Order Status: ${order.status}</p>
             <p>Payment method: ${order.payment}</p>
-            <p>Tracking Number: ${order._id}</p>
           </div>
         </div>
       </div>
@@ -230,13 +229,11 @@ module.exports = ({ order }) => {
         </div>
         <div class="payment__item">
           <span class="payment__item-title">Shipping:</span>
-          <span class="payment__item-price">$20.00</span>
+          <span class="payment__item-price">$0.00</span>
         </div>
         <div class="payment__item">
           <span class="payment__item-title">Total:</span>
-          <span class="payment__item-price">$${(order.amount + 20).toFixed(
-            2
-          )}</span>
+          <span class="payment__item-price">$${order.amount.toFixed(2)}</span>
         </div>
       </div>
       <div class="footer">
