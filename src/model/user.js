@@ -6,6 +6,7 @@ const UserSchema = new mongoose.Schema(
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     isAdmin: { type: Boolean, default: false },
+    isOrder: { type: Boolean, default: false },
     deliveryInfo: {
       name: { type: String, default: "" },
       phone: { type: String, default: "" },

@@ -221,7 +221,7 @@ class UserController {
   readAllUser = async (req, res) => {
     let data;
     let filter = {};
-    const { page, pageSize, orderBy, search } = req.query;
+    const { page, pageSize, orderBy, search, isOrder } = req.query;
 
     if (orderBy) {
       let arraySort = orderBy.split("-");
@@ -229,7 +229,7 @@ class UserController {
         [arraySort[0]]: arraySort[1],
       };
     }
-
+    console.log({ isOrder });
     let qSearch = {
       $or: [
         {
@@ -250,21 +250,35 @@ class UserController {
       ],
     };
 
-    console.log(search);
-
     const { limit, offset } = getPagination(page, pageSize);
     try {
-      data = await User.paginate(
-        {
-          ...qSearch,
-          deleted: false,
-        },
-        {
-          offset,
-          limit,
-          sort: filter,
-        }
-      );
+      if (isOrder === "true" || isOrder === "false") {
+        data = await User.paginate(
+          {
+            ...qSearch,
+            deleted: false,
+            isOrder,
+          },
+          {
+            offset,
+            limit,
+            sort: filter,
+          }
+        );
+      } else {
+        data = await User.paginate(
+          {
+            ...qSearch,
+            deleted: false,
+          },
+          {
+            offset,
+            limit,
+            sort: filter,
+          }
+        );
+      }
+
       let users = data.docs;
 
       //Get count order and total

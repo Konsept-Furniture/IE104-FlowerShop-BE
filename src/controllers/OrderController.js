@@ -24,6 +24,10 @@ class OrderController {
       const newOrder = new Order(req.body);
       const savedOrder = await newOrder.save();
 
+      await User.findByIdAndUpdate(req.user.id, {
+        isOrder: true,
+      });
+
       let products = req.body.products;
       const cart = await Cart.findOne({ userId: req.user.id });
       for (let i = 0; i < products.length; i++) {
