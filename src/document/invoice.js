@@ -2,13 +2,15 @@ module.exports = ({ order }) => {
   const today = new Date();
   let stringTable = "";
   console.log(order);
+  let count = 0;
   order.products.forEach(
     (item) =>
       (stringTable += `<tr>
-            <td>${item.productId.slice(0, 8)}</td>
+            <td>${++count}</td>
             <td>${item.title}</td>
+            <td>${item.price.toFixed(2)}</td>
             <td>${item.quantity}</td>
-            <td>$${item.price.toFixed(2)}</td>
+            <td>$${(item.quantity * item.price).toFixed(2)}</td>
           </stringTabletr>`)
   );
   console.log(stringTable);
@@ -113,7 +115,7 @@ module.exports = ({ order }) => {
 
       .items td {
         border: 1px solid #dcb181;
-        text-align: left;
+        text-align: center;
         padding: 8px;
       }
       .items th {
@@ -188,10 +190,10 @@ module.exports = ({ order }) => {
             <p>Date: ${order.createdAt.getDate()}-${
     order.createdAt.getMonth() + 1
   }-${order.createdAt.getFullYear()}</p>
-            <p>Order NO.: ${order._id.toString().slice(0, 8)}</p>
+            <p>Order NO.: ${order._id}</p>
             <p>Order Status: ${order.status}</p>
             <p>Payment method: ${order.payment}</p>
-            <p>Tracking Number: ${order._id.toString().slice(0, 8)}</p>
+            <p>Tracking Number: ${order._id}</p>
           </div>
         </div>
       </div>
@@ -213,6 +215,7 @@ module.exports = ({ order }) => {
       <div class="items">
         <table>
           <tr>
+            <th>No.</th>
             <th>Item</th>
             <th>Price</th>
             <th>Quantity</th>
@@ -242,7 +245,7 @@ module.exports = ({ order }) => {
           If you have any questions about this invoice , please contact our
           service team.
         </p>
-        <p class="footer__thankyou">Thank you for your custom with us .</p>
+        <p class="footer__thankyou">Thank you for your purchase .</p>
       </div>
     </div>
   </body>
