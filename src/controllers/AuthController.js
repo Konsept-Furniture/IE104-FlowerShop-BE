@@ -7,7 +7,7 @@ class AuthControler {
   register = async (req, res) => {
     try {
       //Phần check xem username có trong hệ thông chưa
-      const user = await User.findOneWithDeleted({
+      const user = await User.findOne({
         username: req.body.username,
       });
       if (user) {
@@ -115,7 +115,7 @@ class AuthControler {
   };
   changePassword = async (req, res) => {
     try {
-      const user = await User.findOneWithDeleted({ _id: req.user.id });
+      const user = await User.findOne({ _id: req.user.id });
       const { oldPassword, newPassword, confirmPassword } = req.body;
 
       const hashedPassword = CryptoJS.AES.decrypt(
