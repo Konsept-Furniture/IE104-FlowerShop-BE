@@ -774,9 +774,61 @@ class OrderController {
       });
   };
 
-  fetchPDF = (req, res) => {
-    console.log(__dirname);
-    res.sendFile(`${__dirname}/result.pdf`);
+  fetchPDF = async (req, res) => {
+    console.log("come here");
+    const options = {
+      format: "A4",
+    };
+    let response = {
+      errorCode: 500,
+      message: "Something went wrong, please try again",
+    };
+    const order = await Order.findById(req.params.orderId);
+    let arrayFilterProduct = [];
+    let arrayProduct = [];
+    let arrayID = [];
+    let orthers = [];
+
+    //Loop array orders
+    order.products.forEach((item) => {
+      arrayID.push(item.productId);
+      orthers.push({
+        quantity: item.quantity || 0,
+        amount: item.quantity || 0,
+      });
+    });
+
+    const Products = await Product.find();
+    arrayFilterProduct = Products.filter((item) =>
+      arrayID.includes(item._id.toString())
+    );
+
+    for (let i = 0; i < arrayID.length; i++) {
+      arrayFilterProduct.forEach((item) => {
+        if (item._id.toString() === arrayID[i]) {
+          const newProduct = {
+            ...orthers[i],
+            productId: arrayID[i],
+            img: item._doc.img,
+            title: item._doc.title,
+            price: item._doc.price,
+          };
+          arrayProduct.push(newProduct);
+        }
+      });
+    }
+    let data = {
+      order: { ...order._doc, products: arrayProduct },
+    };
+    pdf
+      .create(pdfTemplate(data), options)
+      .toFile(`${__dirname}/result.pdf`, (err) => {
+        if (err) {
+          return res.json(response);
+        }
+        console.log("Success");
+        res.sendFile(`${__dirname}/result.pdf`);
+      });
   };
 }
 
