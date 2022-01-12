@@ -61,13 +61,13 @@ module.exports = ({ order }) => {
         /* padding: 0px 10px; */
         width: 48%;
         float: right;
-        height: 250px;
+        height: 200px;
       }
       .information__item__order {
         border: 1px solid #dcb181;
         /* padding: 0px 10px; */
         width: 48%;
-        height: 250px;
+        height: 200px;
       }
 
       .information__item__header {
@@ -131,8 +131,7 @@ module.exports = ({ order }) => {
 
       .payment {
         margin-top: 15px;
-        font-size: 12px;
-        font-weight: 600;
+        font-size: 10px;
       }
       .payment__item {
         /* display: flex;
@@ -140,7 +139,7 @@ module.exports = ({ order }) => {
         justify-content: space-between; */
         line-height: 1.5;
         margin-left: 200px;
-        font-size: 12px;
+        font-size: 10px;
       }
       .payment__item-price {
         float: right;
