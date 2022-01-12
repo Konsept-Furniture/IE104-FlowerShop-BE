@@ -179,8 +179,27 @@ class OrderController {
         createdAt: "desc",
       });
 
+      const Products = await Product.find();
+
+      let array = [];
+
+      orders.forEach((item) => {
+        // console.log(item.userId);
+        console.log("Come here map");
+        let arrayProduct = this.getProductInfo(item, Products);
+        array.push(arrayProduct);
+      });
+
+      console.log("array", array);
+
+      const results = orders.map((item, index) => {
+        console.log(item.userId);
+
+        return { ...item._doc, products: array[index] };
+      });
+
       const response = {
-        data: orders,
+        data: results,
         errorCode: 0,
         message: "Success",
       };
