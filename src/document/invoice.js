@@ -8,7 +8,7 @@ module.exports = ({ order }) => {
       (stringTable += `<tr>
             <td>${++count}</td>
             <td>${item.title}</td>
-            <td>${item.price.toFixed(2)}</td>
+            <td>$${item.price.toFixed(2)}</td>
             <td>${item.quantity}</td>
             <td>$${(item.quantity * item.price).toFixed(2)}</td>
           </stringTabletr>`)
