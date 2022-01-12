@@ -185,13 +185,13 @@ module.exports = ({ order }) => {
             <p>Order Information</p>
           </div>
           <div class="information__item__body">
-            <p>Date : ${order.createdAt.getDate()}-${
+            <p>Date: ${order.createdAt.getDate()}-${
     order.createdAt.getMonth() + 1
   }-${order.createdAt.getFullYear()}</p>
-            <p>Order NO. :${order._id}</p>
-            <p>Order Status : ${order.status}</p>
-            <p>Payment method :${order.payment}</p>
-            <p>Tracking Number : ${order._id}</p>
+            <p>Order NO.: ${order._id.toString().slice(0, 8)}</p>
+            <p>Order Status: ${order.status}</p>
+            <p>Payment method: ${order.payment}</p>
+            <p>Tracking Number: ${order._id.toString().slice(0, 8)}</p>
           </div>
         </div>
       </div>
