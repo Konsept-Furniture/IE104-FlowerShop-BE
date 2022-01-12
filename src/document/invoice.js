@@ -1,5 +1,17 @@
 module.exports = ({ order }) => {
   const today = new Date();
+  let stringTable = "";
+  console.log(order);
+  order.products.forEach(
+    (item) =>
+      (stringTable += `<tr>
+            <td>${item.productId.slice(0, 8)}</td>
+            <td>${item.title}</td>
+            <td>${item.quantity}</td>
+            <td>$${item.price.toFixed(2)}</td>
+          </stringTabletr>`)
+  );
+  console.log(stringTable);
   return `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,7 +23,7 @@ module.exports = ({ order }) => {
       .wrapper {
         margin: 25px;
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        font-size: 12px;
+        font-size: 20px;
       }
 
       .header {
@@ -20,10 +32,10 @@ module.exports = ({ order }) => {
         justify-content: space-between; */
       }
       .header__img {
-        width: 150px;
+        width: 200px;
       }
       .header__text {
-        font-size: 36px;
+        font-size: 48px;
         font-weight: bold;
         color: #dcb181;
         float: right;
@@ -39,6 +51,7 @@ module.exports = ({ order }) => {
         grid-row-gap: 5px; */
         width: 100%;
         clear: both;
+        margin-top: 20px;
       }
 
       .information__item__supplier {
@@ -46,13 +59,13 @@ module.exports = ({ order }) => {
         /* padding: 0px 10px; */
         width: 48%;
         float: right;
-        height: 200px;
+        height: 300px;
       }
       .information__item__order {
         border: 1px solid #dcb181;
         /* padding: 0px 10px; */
         width: 48%;
-        height: 200px;
+        height: 300px;
       }
 
       .information__item__header {
@@ -71,7 +84,7 @@ module.exports = ({ order }) => {
       }
 
       .customer {
-        margin-top: 15px;
+        margin-top: 30px;
         border: 1px solid #dcb181;
       }
       .customer__header {
@@ -90,7 +103,7 @@ module.exports = ({ order }) => {
       }
 
       .items {
-        margin-top: 15px;
+        margin-top: 30px;
       }
       .items table {
         font-family: arial, sans-serif;
@@ -124,7 +137,8 @@ module.exports = ({ order }) => {
         align-items: flex-end;
         justify-content: space-between; */
         line-height: 1.5;
-        margin-left: 300px;
+        margin-left: 500px;
+        font-size: 20px;
       }
       .payment__item-price {
         float: right;
@@ -160,10 +174,10 @@ module.exports = ({ order }) => {
             <p>Supplier company information</p>
           </div>
           <div class="information__item__body">
-            <p>BANGGOOD TECHNOLOGY CO., LIMITED</p>
-            <p>Room 38, 11/F, Meeco Industrial Building</p>
-            <p>53-55 Au Pui Wan Street, Fotan, Shatin, N.T.</p>
-            <p>Viet Nam</p>
+            <p>FURNITURE SHOP</p>
+            <p>Room 999, 99/ZZ, HAKUNA MATATA </p>
+            <p>99-99 HMHMHMHMHM, HAKUNA MATATA </ p>
+            <p>VIET NAM</p>
           </div>
         </div>
         <div class="information__item__order">
@@ -171,11 +185,13 @@ module.exports = ({ order }) => {
             <p>Order Information</p>
           </div>
           <div class="information__item__body">
-            <p>Date :2022-01-03 21:39:35</p>
-            <p>Order NO. :106572494</p>
-            <p>Order Status : Deliveried</p>
-            <p>Payment (TXD) :USD</p>
-            <p>Tracking Number : A0003622010401W4</p>
+            <p>Date : ${order.createdAt.getDate()}-${
+    order.createdAt.getMonth() + 1
+  }-${order.createdAt.getFullYear()}</p>
+            <p>Order NO. :${order._id}</p>
+            <p>Order Status : ${order.status}</p>
+            <p>Payment method :${order.payment}</p>
+            <p>Tracking Number : ${order._id}</p>
           </div>
         </div>
       </div>
@@ -184,10 +200,14 @@ module.exports = ({ order }) => {
           <p>Ship To</p>
         </div>
         <div class="customer__body">
-          <p>${order.name}</p></p>
-          <p>${order.address}</p>
-          <p>${order.orderId}</p>
-          <p>${order.phone}</p>
+          <p>${order.deliveryInfo.name}</p>
+          <p>${order.deliveryInfo.phone}</p>
+          <p>${order.deliveryInfo.email}</p>
+          <p>${order.deliveryInfo.address.street}  ${
+    order.deliveryInfo.address.ward
+  }  ${order.deliveryInfo.address.district}  ${
+    order.deliveryInfo.address.province
+  }</p>
         </div>
       </div>
       <div class="items">
@@ -198,38 +218,23 @@ module.exports = ({ order }) => {
             <th>Quantity</th>
             <th>Total</th>
           </tr>
-          <tr>
-            <td>Table</td>
-            <td>100$</td>
-            <td>5</td>
-            <td>500</td>
-          </tr>
-          <tr>
-            <td>Table</td>
-            <td>100$</td>
-            <td>5</td>
-            <td>500</td>
-          </tr>
-          <tr>
-            <td>Table</td>
-            <td>100$</td>
-            <td>5</td>
-            <td>500</td>
-          </tr>
+          ${stringTable}
         </table>
       </div>
       <div class="payment">
         <div class="payment__item">
           <span class="payment__item-title">Subtotal:</span>
-          <span class="payment__item-price">1000$</span>
+          <span class="payment__item-price">$${order.amount.toFixed(2)}</span>
         </div>
         <div class="payment__item">
           <span class="payment__item-title">Shipping:</span>
-          <span class="payment__item-price">20$</span>
+          <span class="payment__item-price">$20.00</span>
         </div>
         <div class="payment__item">
           <span class="payment__item-title">Total:</span>
-          <span class="payment__item-price">100$</span>
+          <span class="payment__item-price">$${(order.amount + 20).toFixed(
+            2
+          )}</span>
         </div>
       </div>
       <div class="footer">

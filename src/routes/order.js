@@ -13,7 +13,7 @@ router.post("/generate-pdf", OrderController.generatePDF);
 router.post("/", verifyToken, OrderController.createOrder);
 
 //GET PDF
-router.get("/fetch-pdf", OrderController.fetchPDF);
+router.get("/fetch-pdf/:orderId", OrderController.fetchPDF);
 
 //UPDATE ORDER - OK
 router.put("/:id", verifyToken, OrderController.updateOrder);
