@@ -183,7 +183,7 @@ class ProductController {
           {
             ...condition,
             quantity: {
-              $gte: 0,
+              $gte: 1,
             },
           },
           {
