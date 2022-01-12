@@ -137,7 +137,7 @@ module.exports = ({ order }) => {
         align-items: flex-end;
         justify-content: space-between; */
         line-height: 1.5;
-        margin-left: 300px;
+        margin-left: 200px;
         font-size: 12px;
       }
       .payment__item-price {
@@ -171,7 +171,7 @@ module.exports = ({ order }) => {
       <div class="information">
         <div class="information__item__supplier">
           <div class="information__item__header">
-            <p>Supplier company information</p>
+            <p>Supplier information</p>
           </div>
           <div class="information__item__body">
             <p>FURNITURE SHOP</p>
