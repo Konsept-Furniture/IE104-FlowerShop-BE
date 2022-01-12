@@ -23,7 +23,7 @@ module.exports = ({ order }) => {
       .wrapper {
         margin: 25px;
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        font-size: 20px;
+        font-size: 14px;
       }
 
       .header {
@@ -51,7 +51,7 @@ module.exports = ({ order }) => {
         grid-row-gap: 5px; */
         width: 100%;
         clear: both;
-        margin-top: 20px;
+        margin-top: 15px;
       }
 
       .information__item__supplier {
@@ -59,13 +59,13 @@ module.exports = ({ order }) => {
         /* padding: 0px 10px; */
         width: 48%;
         float: right;
-        height: 300px;
+        height: 250px;
       }
       .information__item__order {
         border: 1px solid #dcb181;
         /* padding: 0px 10px; */
         width: 48%;
-        height: 300px;
+        height: 250px;
       }
 
       .information__item__header {
@@ -84,7 +84,7 @@ module.exports = ({ order }) => {
       }
 
       .customer {
-        margin-top: 30px;
+        margin-top: 15px;
         border: 1px solid #dcb181;
       }
       .customer__header {
@@ -103,7 +103,7 @@ module.exports = ({ order }) => {
       }
 
       .items {
-        margin-top: 30px;
+        margin-top: 15px;
       }
       .items table {
         font-family: arial, sans-serif;
@@ -128,7 +128,7 @@ module.exports = ({ order }) => {
       }
 
       .payment {
-        margin-top: 20px;
+        margin-top: 15px;
         font-size: 12px;
         font-weight: 600;
       }
@@ -138,7 +138,7 @@ module.exports = ({ order }) => {
         justify-content: space-between; */
         line-height: 1.5;
         margin-left: 500px;
-        font-size: 20px;
+        font-size: 12px;
       }
       .payment__item-price {
         float: right;
