@@ -202,7 +202,7 @@ class OrderController {
         arrayID.push(item.productId);
         orthers.push({
           quantity: item.quantity || 0,
-          amount: item.quantity || 0,
+          amount: item.amount || 0,
         });
       });
 
