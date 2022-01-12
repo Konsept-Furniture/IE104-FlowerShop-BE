@@ -35,7 +35,7 @@ module.exports = ({ order }) => {
         width: 200px;
       }
       .header__text {
-        font-size: 48px;
+        font-size: 44px;
         font-weight: bold;
         color: #dcb181;
         float: right;
