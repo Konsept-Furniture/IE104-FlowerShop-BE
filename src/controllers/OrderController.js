@@ -299,6 +299,7 @@ class OrderController {
         data = await Order.paginate(
           {
             status,
+            deleted: false,
           },
           {
             offset,
@@ -309,7 +310,9 @@ class OrderController {
       } else {
         console.log("Come here !== empty");
         data = await Order.paginate(
-          {},
+          {
+            deleted: false,
+          },
           {
             offset,
             limit,

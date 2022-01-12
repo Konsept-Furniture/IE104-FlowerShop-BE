@@ -128,7 +128,7 @@ class ProductController {
       return res.json(response);
     }
   };
-  
+
   readAllProductCategory = async (req, res) => {
     try {
       let data;
@@ -181,7 +181,9 @@ class ProductController {
         data = await Product.paginate(
           {
             ...condition,
-            inStock: true,
+            quantity: {
+              $gte: 0,
+            },
           },
           {
             offset,
@@ -193,7 +195,7 @@ class ProductController {
         data = await Product.paginate(
           {
             ...condition,
-            inStock: false,
+            quantity: 0,
           },
           {
             offset,

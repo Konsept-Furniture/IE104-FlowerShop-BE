@@ -109,7 +109,7 @@ class UserController {
         );
         const response = {
           errorCode: 0,
-          message: "The order has been put in the trash...",
+          message: "The user has been put in the trash...",
         };
         return res.json(response);
       }
