@@ -176,7 +176,7 @@ module.exports = ({ order }) => {
           </div>
           <div class="information__item__body">
             <p>FURNITURE SHOP</p>
-            <p>Lầu 07, Block E, University of Information Technology </p>
+            <p>Floor 07, Block E, University of Information Technology </p>
             <p>Quarter 6, Linh Trung Ward, Thu Duc District, Ho Chi Minh City.</ p>
             <p>VIET NAM</p>
           </div>
@@ -200,10 +200,10 @@ module.exports = ({ order }) => {
           <p>Ship To</p>
         </div>
         <div class="customer__body">
-          <p>${order.deliveryInfo.name}</p>
-          <p>${order.deliveryInfo.phone}</p>
-          <p>${order.deliveryInfo.email}</p>
-          <p>${order.deliveryInfo.address.street},  ${
+          <p>Name: ${order.deliveryInfo.name}</p>
+          <p>Phone: ${order.deliveryInfo.phone}</p>
+          <p>Email: ${order.deliveryInfo.email}</p>
+          <p>Address: ${order.deliveryInfo.address.street},  ${
     order.deliveryInfo.address.ward
   },  ${order.deliveryInfo.address.district},  ${
     order.deliveryInfo.address.province
