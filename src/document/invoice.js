@@ -23,7 +23,7 @@ module.exports = ({ order }) => {
       .wrapper {
         margin: 25px;
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        font-size: 14px;
+        font-size: 12px;
       }
 
       .header {
@@ -137,7 +137,7 @@ module.exports = ({ order }) => {
         align-items: flex-end;
         justify-content: space-between; */
         line-height: 1.5;
-        margin-left: 500px;
+        margin-left: 300px;
         font-size: 12px;
       }
       .payment__item-price {
